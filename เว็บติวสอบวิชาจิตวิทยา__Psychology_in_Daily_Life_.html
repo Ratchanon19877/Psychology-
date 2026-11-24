@@ -1,0 +1,2394 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MindSpace Prep — ระบบติวสอบวิชาจิตวิทยา (18001001 Psychology in Daily Life)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            thai: ['Prompt', 'sans-serif'],
+            eng: ['Plus Jakarta Sans', 'Prompt', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Prompt', 'Plus Jakarta Sans', sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+    .font-eng {
+      font-family: 'Plus Jakarta Sans', 'Prompt', sans-serif;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .concept-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .concept-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.08);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col lg:flex-row">
+
+  <!-- Mobile Top Header -->
+  <header class="lg:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-30">
+    <div class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-sm">
+        Ψ
+      </div>
+      <div>
+        <h1 class="font-bold text-slate-800 text-sm leading-tight">MindSpace Prep</h1>
+        <p class="text-[11px] text-slate-500">Psychology in Daily Life</p>
+      </div>
+    </div>
+    <button onclick="toggleSidebar()" class="p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Sidebar Overlay (Mobile) -->
+  <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-30 hidden lg:hidden backdrop-blur-xs"></div>
+
+  <!-- Sidebar Navigation -->
+  <aside id="sidebar" class="fixed lg:sticky top-0 left-0 z-40 h-screen w-72 bg-white border-r border-slate-200 flex flex-col transition-transform duration-300 -translate-x-full lg:translate-x-0 shrink-0">
+    <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('dashboard')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white flex items-center justify-center font-bold text-xl shadow-md shadow-indigo-200">
+          Ψ
+        </div>
+        <div>
+          <h1 class="font-bold text-slate-800 text-base leading-tight">MindSpace Prep</h1>
+          <span class="text-xs text-indigo-600 font-medium">ติวสอบจิตวิทยา 18001001</span>
+        </div>
+      </div>
+      <button onclick="toggleSidebar()" class="lg:hidden p-1.5 text-slate-400 hover:text-slate-600">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-4 space-y-6">
+      <!-- Overview -->
+      <div>
+        <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-2">ภาพรวมการเรียน</p>
+        <button onclick="navigate('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition">
+          <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <span>หน้าหลัก & ความคืบหน้า</span>
+        </button>
+      </div>
+
+      <!-- Study Modules -->
+      <div>
+        <div class="px-3 flex items-center justify-between mb-2">
+          <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">บทเรียน & สอบท้ายบท</p>
+          <span id="sidebarProgressBadge" class="text-[11px] font-semibold bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full">0/6 บท</span>
+        </div>
+        <div id="chapterNavList" class="space-y-1"></div>
+      </div>
+
+      <!-- Mock Exam -->
+      <div>
+        <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-2">สนามสอบจำลอง</p>
+        <button onclick="navigate('mock')" id="nav-mock" class="nav-item w-full flex items-center justify-between px-3 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-indigo-50 to-violet-50 text-indigo-700 border border-indigo-100 hover:border-indigo-300 transition">
+          <div class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div class="text-left">
+              <div>English Mock Exam</div>
+              <div class="text-[11px] font-normal text-indigo-500">ข้อสอบภาษาอังกฤษ 30 ข้อ</div>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 text-[10px] font-bold bg-indigo-600 text-white rounded-md">EN</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer Reset -->
+    <div class="p-4 border-t border-slate-100 bg-slate-50/60">
+      <button onclick="resetAllProgress()" class="w-full text-xs text-slate-500 hover:text-rose-600 py-1.5 flex items-center justify-center gap-1.5 transition">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        รีเซ็ตประวัติการเรียนทั้งหมด
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 min-w-0">
+    <div id="mainContainer" class="max-w-5xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
+      <!-- Dynamic Content Injected Here -->
+    </div>
+  </main>
+
+  <script>
+    // =========================================================================
+    // COURSE DATA: 6 COMPREHENSIVE CHAPTERS (THAI TEACHING + ENGLISH KEYWORDS)
+    // =========================================================================
+    const chaptersData = [
+      {
+        id: 1,
+        shortTitle: "บทที่ 1: จิตเวชศาสตร์เบื้องต้น",
+        title: "บทที่ 1: พื้นฐานจิตเวชศาสตร์และโรคทางจิตเวชที่พบบ่อย",
+        engTitle: "Introduction to Psychiatry & Common Psychiatric Disorders",
+        badgeColor: "indigo",
+        summary: "เข้าใจความแตกต่างระหว่าง Psychiatry และ Psychology กลไกความเครียด (HPA Axis) อารมณ์ (Mood vs. Affect) และเกณฑ์การวินิจฉัยโรคซึมเศร้า ไบโพลาร์ วิตกกังวล และภาวะปรับตัวผิดปกติ",
+        lessonHTML: `
+          <div class="space-y-6">
+            <!-- Section 1 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-indigo-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm">1</span>
+                จิตเวชศาสตร์ (Psychiatry) vs จิตวิทยา (Psychology)
+              </h3>
+              <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                คำว่า <strong>Psychiatry</strong> บัญญัติขึ้นครั้งแรกในปี ค.ศ. 1808 โดยแพทย์ชาวเยอรมัน <strong>Johann Christian Reil</strong> มาจากรากศัพท์ <em>Psych-</em> (จิตวิญญาณ/Soul) + <em>-iatry</em> (การรักษาทางการแพทย์) แปลตรงตัวว่า <strong>"Medical treatment of the soul"</strong>
+              </p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                <div class="p-3.5 rounded-xl bg-indigo-50/70 border border-indigo-100">
+                  <div class="font-bold text-indigo-900">Psychiatry (จิตเวชศาสตร์)</div>
+                  <p class="text-slate-600 text-xs mt-1">สาขาหนึ่งของ<strong>แพทยศาสตร์</strong> เน้นการวินิจฉัย รักษา และป้องกันความผิดปกติทางจิตใจ อารมณ์ และพฤติกรรม (จ่ายยาได้)</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-teal-50/70 border border-teal-100">
+                  <div class="font-bold text-teal-900">Psychology (จิตวิทยา)</div>
+                  <p class="text-slate-600 text-xs mt-1"><strong>วิทยาศาสตร์</strong>ที่ศึกษาพฤติกรรม ประสบการณ์ และการทำงานปกติของจิตใจมนุษย์</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-amber-50/70 border border-amber-100">
+                  <div class="font-bold text-amber-900">Psychotherapy (จิตบำบัด)</div>
+                  <p class="text-slate-600 text-xs mt-1">การรักษาปัญหาทางจิตใจด้วยวิธีการที่<strong>ไม่ใช้ยา/ทางกายภาพ</strong> (เช่น การพูดคุยบำบัด)</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-purple-50/70 border border-purple-100">
+                  <div class="font-bold text-purple-900">Psychoanalysis (จิตวิเคราะห์)</div>
+                  <p class="text-slate-600 text-xs mt-1">จิตบำบัดรูปแบบเฉพาะที่เน้นการสำรวจ<strong>จิตไร้สำนึก (Unconscious mind)</strong></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-indigo-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm">2</span>
+                ความเครียดและกลไก HPA Axis (Stress & Pathophysiology)
+              </h3>
+              <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                <strong>Stress</strong> คือสภาวะที่สมดุลของร่างกายและจิตใจ (Homeostasis) ถูกท้าทาย แบ่งเป็น <strong>Good Stress (Eustress)</strong> ที่ช่วยเพิ่มสมาธิ พลังงาน และภูมิคุ้มกัน กับ <strong>Toxic Stress (Distress)</strong> ที่ทำลายสุขภาพ
+              </p>
+              <!-- HPA Axis Visual Flow -->
+              <div class="bg-slate-900 text-white rounded-xl p-4 mb-4">
+                <div class="text-xs text-indigo-300 font-semibold uppercase tracking-wider mb-3">กลไกการตอบสนองต่อความเครียด (HPA Axis Pathway)</div>
+                <div class="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+                  <div class="bg-slate-800 border border-slate-700 px-3 py-2 rounded-lg text-center flex-1 min-w-[110px]">
+                    <div class="font-bold text-amber-400">Hypothalamus</div>
+                    <div class="text-[11px] text-slate-300">หลั่งฮอร์โมน CRH</div>
+                  </div>
+                  <span class="text-indigo-400 font-bold">→</span>
+                  <div class="bg-slate-800 border border-slate-700 px-3 py-2 rounded-lg text-center flex-1 min-w-[110px]">
+                    <div class="font-bold text-sky-400">Pituitary Gland</div>
+                    <div class="text-[11px] text-slate-300">หลั่งฮอร์โมน ACTH</div>
+                  </div>
+                  <span class="text-indigo-400 font-bold">→</span>
+                  <div class="bg-slate-800 border border-slate-700 px-3 py-2 rounded-lg text-center flex-1 min-w-[110px]">
+                    <div class="font-bold text-rose-400">Adrenal Gland</div>
+                    <div class="text-[11px] text-slate-300">หลั่ง Cortisol</div>
+                  </div>
+                </div>
+                <p class="text-xs text-slate-300 mt-3 pt-2.5 border-t border-slate-700">
+                  ⚠️ <strong>Chronic Stress (ความเครียดเรื้อรัง):</strong> ทำให้ระดับ Cortisol สูงผิดปกติ ส่งผลให้เซลล์สมองส่วน <strong>Hippocampus</strong> เสียหาย กระทบต่อ<strong>ความจำ การเรียนรู้ และสมาธิ</strong> และเพิ่มความเสี่ยงโรคซึมเศร้า วิตกกังวล PTSD และอัลไซเมอร์
+                </p>
+              </div>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-indigo-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm">3</span>
+                ความแตกต่างระหว่าง Mood กับ Affect และกลุ่มโรคสำคัญ (DSM-5-TR)
+              </h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5 text-sm">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                  <span class="px-2 py-0.5 text-xs font-bold bg-indigo-600 text-white rounded">MOOD (พื้นอารมณ์)</span>
+                  <ul class="mt-2 space-y-1 text-slate-600 text-xs list-disc list-inside">
+                    <li>สภาวะอารมณ์<strong>ภายใน (Internal)</strong></li>
+                    <li>คงอยู่<strong>ต่อเนื่องยาวนาน (Sustained)</strong></li>
+                    <li>เป็นความรู้สึกส่วนตัวของผู้ป่วย (Subjective)</li>
+                  </ul>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                  <span class="px-2 py-0.5 text-xs font-bold bg-violet-600 text-white rounded">AFFECT (การแสดงออกทางอารมณ์)</span>
+                  <ul class="mt-2 space-y-1 text-slate-600 text-xs list-disc list-inside">
+                    <li>การแสดงอารมณ์ออก<strong>ภายนอก (External)</strong> ผ่านสีหน้า ท่าทาง</li>
+                    <li><strong>เปลี่ยนแปลงได้เร็ว (Shifting)</strong> ตามสถานการณ์</li>
+                    <li>แพทย์/ผู้สังเกตสามารถประเมินได้จากภายนอก</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="space-y-3 text-sm">
+                <div class="p-4 rounded-xl border-l-4 border-blue-500 bg-blue-50/40">
+                  <div class="font-bold text-slate-800">1. Major Depressive Disorder (โรคซึมเศร้า)</div>
+                  <p class="text-xs text-slate-600 mt-1">
+                    ต้องมีอาการหลักอย่างน้อย 1 ข้อ คือ <strong>Depressed mood (อารมณ์เศร้า)</strong> หรือ <strong>Loss of interest / Anhedonia (เบื่อหน่าย หมดความสนใจ)</strong> ร่วมกับอาการอื่นรวมอย่างน้อย <strong>5 ข้อขึ้นไป นานติดต่อกันอย่างน้อย 2 สัปดาห์</strong> (เช่น นอนไม่หลับ/หลับมาก, น้ำหนักเปลี่ยน, อ่อนเพลีย, รู้สึกไร้ค่า/รู้สึกผิด, สมาธิลดลง, คิดฆ่าตัวตาย) <br/>
+                    <em>*ข้อควรจำ:</em> <strong>Sadness</strong> เป็นเพียงอารมณ์ชั่วคราวที่ตอบสนองต่อเหตุการณ์ ส่วน <strong>Depression</strong> เป็นโรคที่คงอยู่นานและกระทบการดำเนินชีวิต
+                  </p>
+                </div>
+
+                <div class="p-4 rounded-xl border-l-4 border-amber-500 bg-amber-50/40">
+                  <div class="font-bold text-slate-800">2. Bipolar I Disorder (โรคอารมณ์สองขั้ว ชนิดที่ 1)</div>
+                  <p class="text-xs text-slate-600 mt-1">
+                    วินิจฉัยจากการมี <strong>Manic Episode (ภาวะแมเนีย) อย่างน้อย 1 ครั้ง</strong> (อาจมีหรือไม่มีซึมเศร้าร่วมด้วยก็ได้) อาการสำคัญของ Mania ได้แก่ อารมณ์ครึกครื้นหรือหงุดหงิดง่ายผิดปกติ ร่วมกับ<strong>นอนน้อยลงโดยไม่รู้สึกเพลีย (Decreased need for sleep)</strong>, พูดเร็วไม่หยุด (Pressured speech), ความคิดแล่นเร็ว (Flight of ideas), เชื่อมั่นในตนเองสูงเกินจริง (Grandiosity) และกล้าเสี่ยง (Risk taking)
+                  </p>
+                </div>
+
+                <div class="p-4 rounded-xl border-l-4 border-rose-500 bg-rose-50/40">
+                  <div class="font-bold text-slate-800">3. Panic Disorder & Agoraphobia (โรคแพนิกและโรคกลัวที่ชุมชน)</div>
+                  <p class="text-xs text-slate-600 mt-1">
+                    <strong>Panic Attack:</strong> อาการตื่นตระหนกเฉียบพลันที่<strong>พุ่งถึงจุดสูงสุดภายในไม่กี่นาที</strong> โดยมีอาการทางกาย/ใจ ≥ 4 จาก 13 อาการ (ใจสั่น เหงื่อแตก หายใจไม่ออก เจ็บหน้าอก กลัวตาย ฯลฯ) และจะเป็น <strong>Panic Disorder</strong> เมื่อเกิดซ้ำๆ ร่วมกับกังวลว่าจะเกิดซ้ำหรือหลีกเลี่ยงพฤติกรรมนาน <strong>≥ 1 เดือน</strong><br/>
+                    <strong>Agoraphobia:</strong> กลัวหรือกังวลอย่างมากใน ≥ 2 สถานการณ์ (เช่น ขนส่งสาธารณะ ที่โล่งแจ้ง ที่ปิดทึบ ต่อแถว/ฝูงชน อยู่คนเดียวนอกบ้าน) นาน <strong>≥ 6 เดือน</strong>
+                  </p>
+                </div>
+
+                <div class="p-4 rounded-xl border-l-4 border-emerald-500 bg-emerald-50/40">
+                  <div class="font-bold text-slate-800">4. Adjustment Disorder (ภาวะปรับตัวผิดปกติ)</div>
+                  <p class="text-xs text-slate-600 mt-1">
+                    เกิดอาการทางอารมณ์หรือพฤติกรรม<strong>ภายใน 3 เดือน</strong>หลังจากเผชิญตัวกระตุ้นความเครียด (Identifiable stressor) ที่รุนแรงเกินสัดส่วน และอาการจะ<strong>ไม่คงอยู่เกิน 6 เดือน</strong>หลังจากตัวกระตุ้นนั้นสิ้นสุดลง
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 2,
+        shortTitle: "บทที่ 2: การนอน การฆ่าตัวตาย & การรักษา",
+        title: "บทที่ 2: สัญญาณเตือน การนอนหลับ การฆ่าตัวตาย และแนวทางการรักษา",
+        engTitle: "Mental Illness, Sleep Hygiene, Suicide Prevention & Treatment Modalities",
+        badgeColor: "violet",
+        summary: "เจาะลึกกลไกการนอน (Adenosine & Melatonin) สุขอนามัยการนอน (Sleep Hygiene) ข้อเท็จจริงและการป้องกันการฆ่าตัวตาย รวมถึงการรักษา 4 รูปแบบหลัก",
+        lessonHTML: `
+          <div class="space-y-6">
+            <!-- Section 1: Sleep -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-violet-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-violet-100 text-violet-700 flex items-center justify-center text-sm">1</span>
+                กลไกการนอนหลับและโรคนอนไม่หลับ (Insomnia & Sleep Hygiene)
+              </h3>
+              <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                คนทั่วไปต้องการการนอนหลับเฉลี่ย <strong>7–9 ชั่วโมง/วัน</strong> (ผู้สูงอายุอาจน้อยลง) ระหว่างหลับสมองจะจัดระเบียบความจำ (Memory consolidation) ฝัน และฟื้นฟูร่างกาย การนอนถูกควบคุมโดย 2 กลไกหลัก:
+              </p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 text-sm">
+                <div class="p-4 rounded-xl bg-indigo-50/70 border border-indigo-100">
+                  <div class="font-bold text-indigo-900">1. Homeostatic Sleep Drive (แรงขับความง่วง)</div>
+                  <p class="text-xs text-slate-600 mt-1">เกิดจากการสะสมของสาร <strong>Adenosine</strong> ในสมองตลอดช่วงที่ตื่น ยิ่งตื่นนาน Adenosine ยิ่งสะสมมาก ทำให้รู้สึกง่วง และจะถูกกำจัดออกขณะนอนหลับ</p>
+                </div>
+                <div class="p-4 rounded-xl bg-violet-50/70 border border-violet-100">
+                  <div class="font-bold text-violet-900">2. Circadian Rhythm (นาฬิกาชีวิต)</div>
+                  <p class="text-xs text-slate-600 mt-1">ควบคุมโดยสมองส่วน <strong>SCN (Suprachiasmatic Nucleus)</strong> เมื่อแสงเข้าตาจะส่งสัญญาณผ่าน Retinohypothalamic tract ไป<strong>ยับยั้ง Pineal gland ไม่ให้หลั่ง Melatonin</strong> แต่เมื่อมืด Pineal gland จะหลั่ง Melatonin เพื่อชักนำให้หลับ</p>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 mb-4 text-xs text-slate-700">
+                <strong>เกณฑ์สำคัญของ Insomnia Disorder:</strong> ต้องมีปัญหาการหลับ (หลับยาก หลับๆ ตื่นๆ ตื่นเช้าเกินไป) แม้มีโอกาสและสภาพแวดล้อมเหมาะสม <strong>และต้องส่งผลกระทบต่อการใช้ชีวิตตอนกลางวัน (Daytime impairment)</strong> เช่น อ่อนเพลีย สมาธิลดลง หงุดหงิด หากไม่มีอาการตอนกลางวัน จะยังไม่ถือว่าเป็นโรค Insomnia
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200">
+                  <div class="font-bold text-emerald-800 text-sm mb-2">✅ Sleep Hygiene: สิ่งที่ควรทำ (Do's)</div>
+                  <ul class="space-y-1.5 text-slate-700 list-disc list-inside">
+                    <li>ตื่นนอนเวลาเดิมทุกวันเพื่อตั้งนาฬิกาชีวิต</li>
+                    <li>ออกกำลังกายช่วงเช้า/บ่าย (รับแสงแดดธรรมชาติ)</li>
+                    <li>จัดห้องนอนให้มืด เงียบ และเย็นสบาย</li>
+                    <li>ทำสมาธิ ผ่อนคลาย หรือจดบันทึกความกังวลก่อนนอน</li>
+                  </ul>
+                </div>
+                <div class="p-4 rounded-xl bg-rose-50/70 border border-rose-200">
+                  <div class="font-bold text-rose-800 text-sm mb-2">❌ Sleep Hygiene: สิ่งที่ไม่ควรทำ (Don'ts)</div>
+                  <ul class="space-y-1.5 text-slate-700 list-disc list-inside">
+                    <li>เล่นมือถือ/ดูหน้าจอก่อนนอน (แสงสีฟ้ากด Melatonin)</li>
+                    <li>ดื่มคาเฟอีนช่วงบ่าย กินมื้อหนัก หรือออกกำลังกายหนักใกล้เวลานอน</li>
+                    <li>ดื่มแอลกอฮอล์ สูบบุหรี่ หรือ<strong>ใช้กัญชาช่วยหลับ</strong> (สมาคมโรคจากการหลับฯ ไม่แนะนำ เพราะเสี่ยงขาดยาและกระตุ้นอาการทางจิต)</li>
+                    <li>นอนจ้องนาฬิกาเมื่อนอนไม่หลับ</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 2: Suicide -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-violet-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-violet-100 text-violet-700 flex items-center justify-center text-sm">2</span>
+                การฆ่าตัวตายและการป้องกัน (Suicide Facts & Prevention)
+              </h3>
+              <ul class="text-sm text-slate-600 space-y-2 mb-4 list-disc list-inside">
+                <li>เป็นสาเหตุการเสียชีวิต<strong>อันดับ 2 ของคนอายุ 15–29 ปี</strong> ทั่วโลก และ <strong>78%</strong> เกิดในประเทศรายได้น้อยถึงปานกลาง</li>
+                <li>ในประเทศไทย <strong>ผู้ชายเสียชีวิตจากการฆ่าตัวตายสำเร็จสูงกว่าผู้หญิง</strong> และพบสูงสุดในช่วงอายุ <strong>30–49 ปี</strong></li>
+                <li><strong>Cry for Help:</strong> การสื่อสารเรื่องการฆ่าตัวตายทั้งคำพูดและภาษากาย <strong>ต้องให้ความสำคัญอย่างจริงจังเสมอ</strong> ไม่ว่าผู้พูดจะตั้งใจจริงหรือเรียกร้องความสนใจก็ตาม</li>
+              </ul>
+              <div class="p-4 rounded-xl bg-indigo-900 text-white text-xs space-y-2">
+                <div class="font-bold text-sm text-indigo-200">💡 หลักการป้องกันการฆ่าตัวตายที่ออกสอบบ่อย:</div>
+                <p>1. <strong>การพูดคุยเรื่องการฆ่าตัวตายไม่ได้เพิ่มความเสี่ยง (Talking does NOT increase risk)</strong> แต่เป็นการเปิดพื้นที่ให้เขาได้ระบายและขอความช่วยเหลือ</p>
+                <p>2. <strong>วิธีป้องกันที่ได้ผลดีที่สุด:</strong> การนำอุปกรณ์หรือช่องทางในการทำร้ายตัวเองออกไปให้พ้นมือ <strong>(Removal of means of self-harm)</strong></p>
+                <p>3. <strong>สายด่วนฉุกเฉิน:</strong> 1669 (การแพทย์ฉุกเฉิน 24 ชม.), 1323 (สายด่วนสุขภาพจิต)</p>
+              </div>
+            </div>
+
+            <!-- Section 3: Treatment Modalities -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-violet-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-violet-100 text-violet-700 flex items-center justify-center text-sm">3</span>
+                แนวทางการรักษาโรคทางจิตเวช 4 ด้าน (Treatment Modalities)
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                  <div class="font-bold text-indigo-700">1. Medication (การรักษาด้วยยา)</div>
+                  <p class="text-xs text-slate-600 mt-1">ปรับสมดุลสารสื่อประสาท (เช่น Monoamine hypothesis: Serotonin/5HT, Norepinephrine/NE, Dopamine/DA) ยาจิตเวชส่วนใหญ่ออกฤทธิ์ที่ <strong>Transporters (~30%)</strong> และ <strong>G-protein linked receptors (~30%)</strong> ต้องอยู่ภายใต้การดูแลของจิตแพทย์</p>
+                </div>
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                  <div class="font-bold text-violet-700">2. Psychotherapy (จิตบำบัด / Talk Therapy)</div>
+                  <p class="text-xs text-slate-600 mt-1">หัวใจสำคัญคือ <strong>"Helping the patient to help themselves"</strong> ผ่านความเข้าใจและเห็นอกเห็นใจ (Empathy) เช่น CBT, Psychodynamic, Family therapy, Mindfulness-based, Group therapy (คนทั่วไปที่ไม่ได้ป่วยก็ทำได้)</p>
+                </div>
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                  <div class="font-bold text-sky-700">3. Non-pharmacological Medical Treatment</div>
+                  <p class="text-xs text-slate-600 mt-1">หัตถการทางการแพทย์ที่ไม่ใช้ยา เช่น <strong>ECT</strong> (Electroconvulsive therapy), <strong>TMS</strong> (Transcranial magnetic stimulation), <strong>Phototherapy</strong> (แสงบำบัด), Direct nerve stimulation</p>
+                </div>
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+                  <div class="font-bold text-emerald-700">4. Psychosocial Rehabilitation (การฟื้นฟูฯ)</div>
+                  <p class="text-xs text-slate-600 mt-1">ฟื้นฟูสมรรถภาพหลังอาการทุเลา เป้าหมายสูงสุดคือ <strong>ความเป็นอิสระและกลับไปใช้ชีวิตในสังคมได้เต็มศักยภาพ (Independence & Full functioning)</strong> เช่น ฝึกอาชีพ (Vocational training), ที่พักฟื้น</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 3,
+        shortTitle: "บทที่ 3: พัฒนาการมนุษย์",
+        title: "บทที่ 3: ทฤษฎีพัฒนาการมนุษย์ (Human Development)",
+        engTitle: "Freud, Erikson, Bandura & Piaget's Developmental Theories",
+        badgeColor: "sky",
+        summary: "เปรียบเทียบ 4 ทฤษฎีพัฒนาการหลัก: จิตวิเคราะห์ (Freud), จิตสังคม 8 ขั้น (Erikson), การเรียนรู้ทางสังคม (Bandura) และพัฒนาการทางสติปัญญา (Piaget)",
+        lessonHTML: `
+          <div class="space-y-6">
+            <!-- Section 1: Freud -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-sky-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-sm">1</span>
+                ทฤษฎีพัฒนาการทางเพศของฟรอยด์ (Freud's Psychosexual Theory)
+              </h3>
+              <p class="text-slate-600 text-sm mb-3">
+                ฟรอยด์เชื่อว่าบุคลิกภาพถูกหล่อหลอมตั้งแต่วัยเด็กผ่านความขัดแย้งในแต่ละขั้น หากแก้ไขไม่สำเร็จจะเกิด <strong>ภาวะติดตรึง (Fixation)</strong> ซึ่งส่งผลต่อนิสัยตอนโต:
+              </p>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                  <thead>
+                    <tr class="bg-sky-50 text-sky-900 border-b border-sky-100">
+                      <th class="p-3 font-bold">ขั้น (Stage)</th>
+                      <th class="p-3 font-bold">ช่วงวัย & จุดสนใจ</th>
+                      <th class="p-3 font-bold">ผลของภาวะติดตรึง (Fixation)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 text-slate-600">
+                    <tr>
+                      <td class="p-3 font-semibold text-slate-800">1. Oral Stage</td>
+                      <td class="p-3">0–1 ปี (ปาก / Mouth)</td>
+                      <td class="p-3"><strong>Oral Receptive:</strong> สูบบุหรี่ ดื่มเหล้า กินจุ พึ่งพาผู้อื่น / <strong>Oral Aggressive:</strong> กัดเล็บ พูดจาเสียดสี (Sarcasm)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-3 font-semibold text-slate-800">2. Anal Stage</td>
+                      <td class="p-3">1–3 ปี (การขับถ่าย)</td>
+                      <td class="p-3"><strong>Anal-Retentive:</strong> เจ้าระเบียบ สมบูรณ์แบบ ขี้เหนียว / <strong>Anal-Expulsive:</strong> สกปรก รกรุงรัง สะเพร่า</td>
+                    </tr>
+                    <tr>
+                      <td class="p-3 font-semibold text-slate-800">3. Phallic Stage</td>
+                      <td class="p-3">3–6 ปี (อวัยวะเพศ / Oedipus & Electra Complex)</td>
+                      <td class="p-3">หลงตัวเอง (Narcissism) ต้องการการยอมรับตลอดเวลา มีปัญหากับผู้มีอำนาจหรือความรักที่ไม่มั่นคง</td>
+                    </tr>
+                    <tr>
+                      <td class="p-3 font-semibold text-slate-800">4. Latency Period</td>
+                      <td class="p-3">6 ปี–วัยรุ่น (แรงขับทางเพศสงบ)</td>
+                      <td class="p-3">เน้นการเรียน ทักษะสังคม และคบเพื่อนเพศเดียวกัน (ไม่มี Fixation เด่นชัด)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-3 font-semibold text-slate-800">5. Genital Stage</td>
+                      <td class="p-3">วัยรุ่น–ตลอดชีวิต</td>
+                      <td class="p-3">พัฒนาความสัมพันธ์แบบผู้ใหญ่ที่รักและทำงานร่วมกับผู้อื่นได้</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Section 2: Erikson -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-sky-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-sm">2</span>
+                ทฤษฎีพัฒนาการทางจิตสังคมของอีริคสัน (Erikson's 8 Stages)
+              </h3>
+              <p class="text-slate-600 text-sm mb-3">
+                ต่างจากฟรอยด์ตรงที่อีริคสันเน้น <strong>ปฏิสัมพันธ์ทางสังคม (Social interaction)</strong> และครอบคลุม <strong>ตลอดช่วงชีวิต (Birth to Death)</strong> ทั้งหมด 8 ขั้น แต่ละขั้นมีคุณธรรมหลัก (Ego Virtue) เมื่อผ่านวิกฤตได้:
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs">
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="text-sky-600 font-bold">1. Infancy (0–1.5 ปี)</div>
+                  <div class="font-semibold text-slate-800 mt-0.5">Trust vs. Mistrust</div>
+                  <div class="mt-1 inline-block px-2 py-0.5 bg-sky-100 text-sky-800 rounded font-medium">Virtue: Hope</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="text-sky-600 font-bold">2. Early Childhood (1.5–3 ปี)</div>
+                  <div class="font-semibold text-slate-800 mt-0.5">Autonomy vs. Shame & Doubt</div>
+                  <div class="mt-1 inline-block px-2 py-0.5 bg-sky-100 text-sky-800 rounded font-medium">Virtue: Will</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="text-sky-600 font-bold">3. Preschool (3–5 ปี)</div>
+                  <div class="font-semibold text-slate-800 mt-0.5">Initiative vs. Guilt</div>
+                  <div class="mt-1 inline-block px-2 py-0.5 bg-sky-100 text-sky-800 rounded font-medium">Virtue: Purpose</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="text-sky-600 font-bold">4. School Age (5–12 ปี)</div>
+                  <div class="font-semibold text-slate-800 mt-0.5">Industry vs. Inferiority</div>
+                  <div class="mt-1 inline-block px-2 py-0.5 bg-sky-100 text-sky-800 rounded font-medium">Virtue: Competence</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="text-sky-600 font-bold">5. Adolescence (12–18 ปี)</div>
+                  <div class="font-semibold text-slate-800 mt-0.5">Identity vs. Role Confusion</div>
+                  <div class="mt-1 inline-block px-2 py-0.5 bg-sky-100 text-sky-800 rounded font-medium">Virtue: Fidelity</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="text-sky-600 font-bold">6. Young Adult (18–40 ปี)</div>
+                  <div class="font-semibold text-slate-800 mt-0.5">Intimacy vs. Isolation</div>
+                  <div class="mt-1 inline-block px-2 py-0.5 bg-sky-100 text-sky-800 rounded font-medium">Virtue: Love</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="text-sky-600 font-bold">7. Middle Adult (40–65 ปี)</div>
+                  <div class="font-semibold text-slate-800 mt-0.5">Generativity vs. Stagnation</div>
+                  <div class="mt-1 inline-block px-2 py-0.5 bg-sky-100 text-sky-800 rounded font-medium">Virtue: Care</div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="text-sky-600 font-bold">8. Late Maturity (65+ ปี)</div>
+                  <div class="font-semibold text-slate-800 mt-0.5">Integrity vs. Despair</div>
+                  <div class="mt-1 inline-block px-2 py-0.5 bg-sky-100 text-sky-800 rounded font-medium">Virtue: Wisdom</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 3: Bandura & Piaget -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+                <h3 class="text-base font-bold text-sky-700 mb-2">3. Social Learning Theory (Albert Bandura)</h3>
+                <ul class="text-xs text-slate-600 space-y-2 list-disc list-inside leading-relaxed">
+                  <li><strong>Observational Learning & Modeling:</strong> มนุษย์เรียนรู้จากการสังเกตและเลียนแบบตัวแบบ (Bobo Doll Experiment, 1961) โดยไม่ต้องรับแรงเสริมโดยตรง</li>
+                  <li><strong>Triadic Reciprocal Determinism:</strong> พฤติกรรม (Behavior), ปัจจัยส่วนบุคคล (Personal/Cognitive) และสิ่งแวดล้อม (Environment) มีอิทธิพลส่งผลต่อกันแบบ 3 ทาง</li>
+                  <li><strong>Self-Efficacy:</strong> ความเชื่อมั่นในความสามารถของตนเองว่าจะทำสิ่งนั้นให้สำเร็จได้</li>
+                </ul>
+              </div>
+
+              <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+                <h3 class="text-base font-bold text-sky-700 mb-2">4. Piaget's Cognitive Model (4 ขั้น)</h3>
+                <ul class="text-xs text-slate-600 space-y-2 list-disc list-inside leading-relaxed">
+                  <li><strong>Sensorimotor (0–2 ปี):</strong> เรียนรู้ผ่านประสาทสัมผัส เกิด <em>Object Permanence</em> (รู้ว่าวัตถุยังอยู่แม้ไม่เห็น) และ <em>A-not-B Error</em></li>
+                  <li><strong>Preoperational (2–7 ปี):</strong> ใช้สัญลักษณ์/ภาษา แต่มีข้อจำกัดคือ <em>Egocentrism</em> (ยึดตัวเองเป็นศูนย์กลาง), <em>Centration</em>, <em>Irreversibility</em> และ <em>Animism</em></li>
+                  <li><strong>Concrete Operational (7–11 ปี):</strong> เข้าใจกฎการอนุรักษ์ (<em>Conservation</em>), <em>Reversibility</em>, <em>Seriation</em>, <em>Classification</em> ในสิ่งที่จับต้องได้</li>
+                  <li><strong>Formal Operational (12 ปี+):</strong> คิดเชิงนามธรรม (Abstract), ตั้งสมมติฐาน (Hypothetical-deductive) และ <em>Metacognition</em></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 4,
+        shortTitle: "บทที่ 4: ตัวตนและบุคลิกภาพ",
+        title: "บทที่ 4: ตัวตน บุคลิกภาพ และการสร้างความประทับใจแรก",
+        engTitle: "Theories of Personality, MBTI & First Impressions",
+        badgeColor: "emerald",
+        summary: "เข้าใจแนวคิดบุคลิกภาพทั้ง 4 กลุ่ม (Psychodynamic, Trait/Big-Five OCEAN, Social-Cognitive, Humanistic/Maslow) แบบประเมิน MBTI และจิตวิทยา First Impression",
+        lessonHTML: `
+          <div class="space-y-6">
+            <!-- Section 1: 4 Approaches -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-emerald-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm">1</span>
+                4 แนวคิดหลักทางทฤษฎีบุคลิกภาพ (Theories of Personality)
+              </h3>
+              <div class="space-y-3 text-sm">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="font-bold text-slate-800">1. Psychodynamic Approach (Freud's Iceberg Model)</div>
+                  <p class="text-xs text-slate-600 mt-1">
+                    <strong>Id:</strong> จิตไร้สำนึก ยึดหลักความพึงพอใจ (<em>Pleasure principle</em>) ต้องการเดี๋ยวนี้ / <strong>Ego:</strong> ยึดหลักความเป็นจริง (<em>Reality principle</em>) ประนีประนอมระหว่าง Id กับโลกจริง / <strong>Superego:</strong> ยึดหลักศีลธรรมและความสมบูรณ์แบบ (<em>Perfection/Moral principle</em>)
+                  </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200">
+                  <div class="font-bold text-emerald-900">2. Trait Approach & The Big-Five Model (OCEAN)</div>
+                  <p class="text-xs text-slate-600 mt-1 mb-2">
+                    <strong>Gordon Allport</strong> แบ่งลักษณะนิสัยเป็น <em>Central Traits</em> (ลักษณะเด่นที่บอกได้ว่าคนนี้เป็นอย่างไรส่วนใหญ่) และ <em>Secondary Traits</em> (เกิดเฉพาะบางสถานการณ์) ต่อมาพัฒนาเป็นโมเดล <strong>Big-Five (OCEAN)</strong>:
+                  </p>
+                  <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 text-xs">
+                    <div class="bg-white p-2.5 rounded-lg border border-emerald-100"><strong class="text-emerald-700">O</strong>penness<br/><span class="text-[11px] text-slate-500">เปิดรับสิ่งใหม่ สร้างสรรค์ อยากรู้อยากเห็น</span></div>
+                    <div class="bg-white p-2.5 rounded-lg border border-emerald-100"><strong class="text-emerald-700">C</strong>onscientiousness<br/><span class="text-[11px] text-slate-500">มีระเบียบ รอบคอบ รับผิดชอบ มีวินัย</span></div>
+                    <div class="bg-white p-2.5 rounded-lg border border-emerald-100"><strong class="text-emerald-700">E</strong>xtraversion<br/><span class="text-[11px] text-slate-500">เข้าสังคม ชอบพูดคุย พลังงานสูง</span></div>
+                    <div class="bg-white p-2.5 rounded-lg border border-emerald-100"><strong class="text-emerald-700">A</strong>greeableness<br/><span class="text-[11px] text-slate-500">เห็นอกเห็นใจ ใจดี ไว้ใจผู้อื่น ประนีประนอม</span></div>
+                    <div class="bg-white p-2.5 rounded-lg border border-emerald-100"><strong class="text-emerald-700">N</strong>euroticism<br/><span class="text-[11px] text-slate-500">หวั่นไหวง่าย วิตกกังวล อารมณ์แปรปรวน</span></div>
+                  </div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                  <div class="font-bold text-slate-800">3. Social-Cognitive Approach (Bandura)</div>
+                  <p class="text-xs text-slate-600 mt-1">
+                    เน้น <em>Reciprocal Determinism</em> และ <em>Self-Efficacy</em> หากคนมี <strong>Low Self-Efficacy</strong> และคิดว่าไม่มีใครทำอะไรได้ผล จะเกิดความเฉยเมย (Apathy) แต่ถ้าคิดว่าคนอื่นทำสำเร็จยกเว้นตัวเอง จะนำไปสู่การโทษตัวเองและซึมเศร้า (Depression)
+                  </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-amber-50/60 border border-amber-200">
+                  <div class="font-bold text-amber-900">4. Humanistic Approach (Maslow's Hierarchy of Needs)</div>
+                  <p class="text-xs text-slate-600 mt-1">
+                    ลำดับขั้นความต้องการ 5 ขั้นจากฐานไปยอด: <strong>1. Physiological</strong> (อาหาร น้ำ นอน) → <strong>2. Safety</strong> (ความปลอดภัย) → <strong>3. Love/Belonging</strong> (ความรัก/สังคม) → <strong>4. Esteem</strong> (การยอมรับ/ศักดิ์ศรี) → <strong>5. Self-Actualization</strong> (การบรรลุศักยภาพสูงสุดของตน) <br/>
+                    <em>Deficiency orientation</em> (หมกมุ่นกับสิ่งที่ขาด) vs <em>Growth orientation</em> (พึงพอใจและเติบโตจากสิ่งที่มีและเป็น)
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 2: MBTI & First Impression -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+                <h3 class="text-base font-bold text-emerald-700 mb-2">2. การประเมินบุคลิกภาพ MBTI</h3>
+                <p class="text-xs text-slate-600 mb-3">พัฒนาโดย <strong>Isabel Myers & Katharine Briggs</strong> แบ่งเป็น <strong>16 บุคลิกภาพ</strong> เพื่อเข้าใจความแตกต่างของคน <strong>(ไม่มี Type ไหนดีที่สุด และไม่ได้วัดความสามารถ)</strong> ประกอบด้วย 4 มิติ:</p>
+                <ul class="text-xs text-slate-700 space-y-1.5">
+                  <li>• <strong>พลังงาน:</strong> Extraversion (E) vs. Introversion (I)</li>
+                  <li>• <strong>การรับข้อมูล:</strong> Sensing (S - ข้อเท็จจริง) vs. Intuition (N - ภาพรวม/ความหมาย)</li>
+                  <li>• <strong>การตัดสินใจ:</strong> Thinking (T - ตรรกะ) vs. Feeling (F - ความรู้สึก/ผู้คน)</li>
+                  <li>• <strong>การใช้ชีวิต:</strong> Judging (J - วางแผนชัดเจน) vs. Perceiving (P - ยืดหยุ่นเปิดกว้าง)</li>
+                </ul>
+              </div>
+
+              <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+                <h3 class="text-base font-bold text-emerald-700 mb-2">3. จิตวิทยาความประทับใจแรก (First Impression)</h3>
+                <ul class="text-xs text-slate-600 space-y-2 list-disc list-inside leading-relaxed">
+                  <li>สมองใช้เวลาเพียง <strong>1/10 วินาที (0.1 วินาที)</strong> ในการตัดสินคนจากใบหน้า</li>
+                  <li>งานวิจัยจาก Harvard พบว่าต้องใช้ปฏิสัมพันธ์เชิงบวกถึง <strong>8 ครั้ง</strong> เพื่อเปลี่ยนความประทับใจแรกที่เป็นลบ 1 ครั้ง</li>
+                  <li>สัดส่วนอิทธิพลของการสื่อสาร: <strong>55% ภาษากาย (Body Language)</strong>, <strong>38% น้ำเสียง (Voice)</strong>, และเพียง <strong>7% คำพูด (Words)</strong></li>
+                  <li><strong>Open Body Language:</strong> สบตา (Social eye contact), ยิ้มจริงใจ, ฝ่ามือเปิด, หลังตรงไม่งอไหล่</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 5,
+        shortTitle: "บทที่ 5: จิตวิทยาสังคม",
+        title: "บทที่ 5: จิตวิทยาสังคม (Social Psychology)",
+        engTitle: "Social Perception, Attribution, Attraction & Social Influence",
+        badgeColor: "amber",
+        summary: "เจาะลึกการรับรู้ทางสังคม อคติในการอธิบายพฤติกรรม (Attribution Biases) ปัจจัยแรงดึงดูดระหว่างบุคคล อคติทางสังคม และกลยุทธ์อิทธิพลทางสังคม (Conformity, Compliance, Obedience)",
+        lessonHTML: `
+          <div class="space-y-6">
+            <!-- Section 1: Social Perception & Attribution -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-amber-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-sm">1</span>
+                การรับรู้ทางสังคมและการอนุมานสาเหตุ (Social Perception & Attribution)
+              </h3>
+              <p class="text-slate-600 text-sm mb-3">
+                <strong>Social Psychology</strong> (Allport, 1954) คือการศึกษาทางวิทยาศาสตร์ว่าความคิด ความรู้สึก และพฤติกรรมของบุคคลได้รับอิทธิพลจากการมีอยู่ของผู้อื่นทั้งที่<strong>เกิดขึ้นจริง จินตนาการ หรือโดยนัย (Actual, imagined, or implied presence of others)</strong>
+              </p>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                <div class="p-3.5 rounded-xl bg-amber-50/70 border border-amber-200">
+                  <div class="font-bold text-amber-900">Fundamental Attribution Error</div>
+                  <p class="text-slate-600 mt-1">เรามักอธิบายพฤติกรรมของ<strong>ผู้อื่น</strong>ว่าเกิดจาก<strong>ปัจจัยภายใน (นิสัย)</strong> และมองข้ามปัจจัยภายนอก (เช่น เพื่อนมาสาย = ขี้เกียจ)</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-orange-50/70 border border-orange-200">
+                  <div class="font-bold text-orange-900">Actor-Observer Effect</div>
+                  <p class="text-slate-600 mt-1">เรามักอธิบายพฤติกรรมของ<strong>ตัวเราเอง</strong>ว่าเกิดจาก<strong>ปัจจัยภายนอก/สถานการณ์</strong> (เช่น เรามาสาย = รถติด)</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-yellow-50/70 border border-yellow-200">
+                  <div class="font-bold text-yellow-900">Self-Serving Bias</div>
+                  <p class="text-slate-600 mt-1">เข้าข้างตัวเอง: เมื่อ<strong>สำเร็จ</strong> = เกิดจากความสามารถของเรา (Internal) แต่เมื่อ<strong>ล้มเหลว</strong> = โทษดวง/ข้อสอบยาก (External)</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 2: Attraction & Prejudice -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-amber-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-sm">2</span>
+                แรงดึงดูดระหว่างบุคคล (Attraction) และอคติ (Prejudice)
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+                  <div class="font-bold text-slate-800 text-sm">ปัจจัยที่ทำให้คนชอบกัน (Keys to Attraction)</div>
+                  <p>• <strong>Similarity:</strong> ชอบคนที่คล้ายกัน (ทัศนคติ อายุ ไลฟ์สไตล์)</p>
+                  <p>• <strong>Matching Hypothesis:</strong> มักเลือกคู่ที่มีระดับความดึงดูดทางกายใกล้เคียงกับตนเอง</p>
+                  <p>• <strong>Halo Effect:</strong> เห็นคนหน้าตาดีแล้วเหมารวมว่าเขาน่าจะฉลาด ใจดี และเก่งไปด้วย</p>
+                  <p>• <strong>Mere Exposure Effect:</strong> การเห็นหน้าหรือได้ยินบ่อยๆ ทำให้ชอบมากขึ้น (หากความรู้สึกแรกเป็นกลางหรือบวก)</p>
+                  <p>• <strong>Reciprocity:</strong> ชอบคนที่ชอบเราตอบ</p>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+                  <div class="font-bold text-slate-800 text-sm">Stereotypes vs. Prejudice & วิธีแก้ไข</div>
+                  <p>• <strong>Stereotypes (การเหมารวม):</strong> ความเชื่อหรือความคาดหวังต่อสมาชิกของกลุ่มใดกลุ่มหนึ่ง</p>
+                  <p>• <strong>Prejudice (อคติ):</strong> ทัศนคติเชิงบวกหรือลบต่อบุคคลเพียงเพราะเขาอยู่กลุ่มนั้น</p>
+                  <p>• <strong>Contact Hypothesis:</strong> การเพิ่มปฏิสัมพันธ์และการติดต่อใกล้ชิดกับกลุ่มเป้าหมายอย่างเท่าเทียมจะช่วยลด Stereotypes และ Prejudice ได้</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 3: Social Influence -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-amber-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-sm">3</span>
+                อิทธิพลทางสังคม: Conformity, Compliance และ Obedience
+              </h3>
+              <div class="space-y-3 text-xs sm:text-sm">
+                <div class="p-3.5 rounded-xl border border-slate-200">
+                  <span class="font-bold text-indigo-700">1. Conformity (การคล้อยตามกลุ่ม):</span> เปลี่ยนพฤติกรรม/ความเชื่อให้เหมือนกลุ่มจากแรงกดดันที่<strong>ไม่ได้พูดออกมาตรงๆ (Unspoken group pressure)</strong> เกิดง่ายขึ้นเมื่อสถานการณ์คลุมเครือ (Ambiguity) กลุ่มเห็นพ้องเป็นเอกฉันท์ (Unanimous) และกลุ่มมีขนาดใหญ่ขึ้น
+                </div>
+                <div class="p-3.5 rounded-xl border border-slate-200">
+                  <span class="font-bold text-violet-700">2. Compliance (การยินยอมทำตามคำขอร้องโดยตรง - Direct Request):</span>
+                  <ul class="mt-1.5 space-y-1 text-xs text-slate-600 list-disc list-inside">
+                    <li><strong>Foot-in-the-door:</strong> ขอเรื่อง<strong>เล็กๆ ก่อน</strong> เมื่อยอมแล้วจึงขอเรื่อง<strong>ใหญ่ขึ้น</strong> (อาศัยความสอดคล้องกับภาพลักษณ์ตนเอง)</li>
+                    <li><strong>Door-in-the-face:</strong> ขอเรื่อง<strong>ใหญ่เกินจริงก่อน</strong>เพื่อให้ถูกปฏิเสธ แล้วค่อยลดลงมาขอเรื่อง<strong>เล็กๆ ที่ต้องการจริง</strong></li>
+                    <li><strong>Low-ball:</strong> เสนอเงื่อนไขที่<strong>น่าดึงดูดใจให้ตกลงรับปากก่อน</strong> แล้วค่อยเพิ่มต้นทุน/เงื่อนไขภายหลัง</li>
+                  </ul>
+                </div>
+                <div class="p-3.5 rounded-xl border border-slate-200">
+                  <span class="font-bold text-rose-700">3. Obedience (การเชื่อฟังคำสั่งผู้มีอำนาจ - Authority Figure):</span> จากการทดลองของ <strong>Stanley Milgram (1963)</strong> พบว่าคนธรรมดายอมทำตามคำสั่งผู้มีอำนาจแม้จะต้องทำร้ายผู้อื่น ปัจจัยที่<strong>ลดการเชื่อฟังได้ดีที่สุด</strong>คือการเห็น<strong>คนอื่นกล้าขัดขืน (Presence of others who disobey)</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 6,
+        shortTitle: "บทที่ 6: ศิลปะกับการเปิดเผยตัวตน",
+        title: "บทที่ 6: ศิลปะกับกลไกการเข้าใจตัวตนและอัตลักษณ์ทางวัฒนธรรม",
+        engTitle: "Art as the Mechanism of Self-Disclosure, Flow, Catharsis & Thai Identity",
+        badgeColor: "rose",
+        summary: "เข้าใจบทบาทของศิลปะต่อจิตใจ สภาวะ Flow และการปลดปล่อยอารมณ์ (Catharsis) ทฤษฎี Extended Mind รวมถึงเอกลักษณ์จิตรกรรมไทยและสุนทรียศาสตร์ตะวันออก vs ตะวันตก",
+        lessonHTML: `
+          <div class="space-y-6">
+            <!-- Section 1: Psychological Mechanisms of Art -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-rose-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center text-sm">1</span>
+                กลไกทางจิตวิทยาของการสร้างสรรค์ศิลปะ (Art & Psychology)
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                <div class="p-4 rounded-xl bg-rose-50/60 border border-rose-100">
+                  <div class="font-bold text-rose-900 text-sm">4 องค์ประกอบของกลไกการสร้างสรรค์</div>
+                  <ul class="mt-1.5 space-y-1 text-slate-700 list-disc list-inside">
+                    <li><strong>Spark (Play):</strong> การเล่นและความสุขที่เป็นจุดเริ่มต้น</li>
+                    <li><strong>Structure (Form):</strong> หลักการทางศิลปะที่ผูกกับกาลและเทศะ</li>
+                    <li><strong>Output (Transformation):</strong> การแปลงนามธรรมเป็นวัตถุที่จับต้องได้</li>
+                    <li><strong>Experience (Aesthetic):</strong> ประสบการณ์ความงามและอารมณ์ผ่านการรับรู้</li>
+                  </ul>
+                </div>
+                <div class="p-4 rounded-xl bg-indigo-50/60 border border-indigo-100">
+                  <div class="font-bold text-indigo-900 text-sm">The Flow State & Neural Exercise</div>
+                  <p class="mt-1.5 text-slate-700 leading-relaxed">
+                    <strong>Flow State:</strong> สภาวะจดจ่ออย่างลึกซึ้งในกระบวนการสร้างสรรค์ ช่วย<strong>ตัดวงจรการคิดวนซ้ำเชิงลบ (Negative rumination)</strong> และทำให้ระบบประสาทสงบอยู่กับปัจจุบัน<br/>
+                    <strong>Neural Exercise:</strong> การทำงานศิลปะกระตุ้นสมองส่วน <strong>Prefrontal Cortex</strong> และ <strong>Amygdala</strong> ช่วยเสริมสร้างความยืดหยุ่นและควบคุมอารมณ์
+                  </p>
+                </div>
+                <div class="p-4 rounded-xl bg-amber-50/60 border border-amber-100">
+                  <div class="font-bold text-amber-900 text-sm">Catharsis (การปลดปล่อยทางอารมณ์)</div>
+                  <p class="mt-1.5 text-slate-700 leading-relaxed">
+                    เปลี่ยนจาก <strong>Internalizing (การเก็บกดไว้ภายใน)</strong> ที่เต็มไปด้วยภาระทางความคิด ไปสู่ <strong>Externalizing (การถ่ายทอดออกภายนอก)</strong> ผ่านงานศิลปะ ทำให้ผู้สร้างได้เห็นและเยียวยาบาดแผลทางใจของตนเอง
+                  </p>
+                </div>
+                <div class="p-4 rounded-xl bg-teal-50/60 border border-teal-100">
+                  <div class="font-bold text-teal-900 text-sm">Extended Mind Thesis & Proto-Environment</div>
+                  <p class="mt-1.5 text-slate-700 leading-relaxed">
+                    <strong>Extended Mind:</strong> อัตลักษณ์ไม่ได้อยู่แค่ในสมอง แต่ถูกยึดโยง (Anchor) ไว้ในวัตถุศิลปะภายนอก<br/>
+                    <strong>Proto-Environment:</strong> ความหมายไม่ได้หยุดนิ่ง แต่เกิดจากการร่วมสร้างความหมายระหว่าง <em>Creator (ผู้สร้าง) → Artwork → Witness (ผู้ชม)</em>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 2: Thai Identity & Aesthetics -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="text-lg font-bold text-rose-700 mb-3 flex items-center gap-2">
+                <span class="w-7 h-7 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center text-sm">2</span>
+                อัตลักษณ์ไทย (Thai-ness) และสุนทรียศาสตร์ตะวันตก vs ตะวันออก
+              </h3>
+              <p class="text-xs text-slate-600 mb-3">
+                <strong>Jitragum Thai (จิตรกรรมไทย):</strong> ใช้ <em>Idealistic Surrealism</em> (แสดงอารมณ์ผ่านท่วงท่ามากกว่าสีหน้าจริง), มุมมองแบบ <em>Bird's Eye View</em> เพื่อเล่าเรื่อง, ใช้ <em>เส้นสินเทา (Sin Thao line)</em> แบ่งฉาก/เวลา และใช้ <em>ลายเกล็ดปลา (Lai Klet Pla)</em> แทนคลื่นน้ำ ส่วน <strong>Lai-Thai</strong> ลดทอนรูปทรงธรรมชาติ (ใบไม้ เปลวไฟ ดอกบัว) สู่ความงามทางจิตวิญญาณอันสมบูรณ์ (Absolute State)
+              </p>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr class="bg-slate-100 text-slate-800 border-b border-slate-200">
+                      <th class="p-2.5 font-bold">ประเด็นเปรียบเทียบ</th>
+                      <th class="p-2.5 font-bold">แนวทางตะวันตก (Western)</th>
+                      <th class="p-2.5 font-bold">แนวทางตะวันออก/ไทย (Eastern/Thai)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 text-slate-600">
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-800">จุดเน้นหลัก (Primary Focus)</td>
+                      <td class="p-2.5">ตัวตน (The Ego) จิตวิทยาปัจเจก การตั้งคำถาม/ท้าทาย</td>
+                      <td class="p-2.5">การตระหนักรู้จากภายใน (Inside-Out) ความกลมกลืน วัฏจักรชีวิต</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-800">เป้าหมาย (Goal of Creation)</td>
+                      <td class="p-2.5">การแสดงออกส่วนบุคคล สร้างรูปแบบใหม่ที่ท้าทายผู้ชม</td>
+                      <td class="p-2.5">การหลอมรวมทางจิตวิญญาณ สนับสนุนศาสนา และเรื่องเล่าส่วนรวม</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-800">มาตรฐานความงาม</td>
+                      <td class="p-2.5">ความสมจริง (Realism) ความสมบูรณ์แบบทางกายภาพ</td>
+                      <td class="p-2.5">การพินิจเชิงสุนทรียะ (Aesthetic Contemplation) ความจริงและความดีงาม</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        `
+      }
+    ];
+
+    // =========================================================================
+    // CHAPTER QUIZZES (5 QUESTIONS PER CHAPTER = 30 QUESTIONS)
+    // =========================================================================
+    const chapterQuizzes = {
+      1: [
+        {
+          q: "คำว่า 'Psychiatry' บัญญัติขึ้นโดย Johann Christian Reil ในปี 1808 มีความหมายตรงตามรากศัพท์ว่าอย่างไร?",
+          options: [
+            "การรักษาทางการแพทย์สำหรับจิตวิญญาณ (Medical treatment of the soul)",
+            "วิทยาศาสตร์ที่ศึกษาการทำงานปกติของสมอง (Science of normal brain function)",
+            "การบำบัดจิตใต้สำนึกผ่านการสะกดจิต (Hypnotic treatment of the unconscious)",
+            "การศึกษาพฤติกรรมมนุษย์ในสังคม (Study of human social behavior)"
+          ],
+          answer: 0,
+          rationale: "Psych- แปลว่า Soul (จิตวิญญาณ) และ -iatry แปลว่า Medical treatment (การรักษาทางการแพทย์) รวมกันคือ Medical treatment of the soul"
+        },
+        {
+          q: "ความเครียดเรื้อรัง (Chronic Stress) ส่งผลให้ระบบ HPA Axis ทำงานผิดปกติและหลั่ง Cortisol สูงต่อเนื่อง จนทำลายเซลล์สมองส่วนใดมากที่สุด?",
+          options: [
+            "Cerebellum (ส่งผลต่อการทรงตัว)",
+            "Hippocampus (ส่งผลต่อความจำ การเรียนรู้ และสมาธิ)",
+            "Occipital Lobe (ส่งผลต่อการมองเห็น)",
+            "Medulla Oblongata (ส่งผลต่อการหายใจ)"
+          ],
+          answer: 1,
+          rationale: "ระดับ Glucocorticoids (Cortisol) ที่สูงเรื้อรังทำให้เกิดการเปลี่ยนแปลงระดับเซลล์ใน Hippocampus ส่งผลให้เกิดความบกพร่องทางสติปัญญา ด้านความจำ การเรียนรู้ และสมาธิ"
+        },
+        {
+          q: "ข้อใดอธิบายความแตกต่างระหว่าง 'Mood' และ 'Affect' ได้ถูกต้องที่สุด?",
+          options: [
+            "Mood คือการแสดงออกภายนอกที่เปลี่ยนเร็ว ส่วน Affect คืออารมณ์ภายในที่คงอยู่นาน",
+            "Mood คืออารมณ์ภายในที่คงอยู่ต่อเนื่อง ส่วน Affect คือการแสดงออกภายนอกที่เปลี่ยนแปลงได้เร็ว",
+            "Mood ประเมินได้โดยแพทย์เท่านั้น ส่วน Affect ผู้ป่วยประเมินเองไม่ได้",
+            "Mood พบเฉพาะในผู้ป่วยจิตเวช ส่วน Affect พบในคนปกติเท่านั้น"
+          ],
+          answer: 1,
+          rationale: "Mood เป็นสภาวะอารมณ์ภายใน (Internal) ที่คงอยู่ต่อเนื่อง (Sustained) ส่วน Affect คือการแสดงออกภายนอก (External) ผ่านสีหน้าท่าทางซึ่งเปลี่ยนแปลงได้เร็ว (Shifting)"
+        },
+        {
+          q: "ตามเกณฑ์ DSM-5 ผู้ป่วยโรคซึมเศร้า (Major Depressive Disorder) ต้องมีอาการหลักอย่างน้อย 1 ข้อคือข้อใด ร่วมกับอาการอื่นรวม ≥ 5 ข้อ นาน ≥ 2 สัปดาห์?",
+          options: [
+            "หูแว่ว (Hallucination) หรือ หลงผิด (Delusion)",
+            "อารมณ์เศร้า (Depressed mood) หรือ หมดความสนใจ/เบื่อหน่าย (Loss of interest)",
+            "นอนน้อยลงโดยไม่เพลีย (Decreased need for sleep) หรือ พูดเร็ว (Pressured speech)",
+            "กลัวที่ชุมชน (Agoraphobia) หรือ ใจสั่นเฉียบพลัน (Panic attack)"
+          ],
+          answer: 1,
+          rationale: "เกณฑ์วินิจฉัย MDE กำหนดว่าต้องมี Depressed mood หรือ Apathy/Loss of interest อย่างน้อย 1 ข้อ ร่วมกับอาการร่วมอื่นๆ ให้ครบอย่างน้อย 5 ข้อ นานติดต่อกันอย่างน้อย 2 สัปดาห์"
+        },
+        {
+          q: "ภาวะ Adjustment Disorder มีกรอบระยะเวลาการเกิดและการหายของอาการตามเกณฑ์วินิจฉัยอย่างไร?",
+          options: [
+            "เกิดภายใน 1 เดือนหลังเจอตัวกระตุ้น และต้องเป็นต่อเนื่องอย่างน้อย 1 ปี",
+            "เกิดภายใน 3 เดือนหลังเจอตัวกระตุ้น และอาการไม่คงอยู่เกิน 6 เดือนหลังตัวกระตุ้นสิ้นสุด",
+            "เกิดภายใน 6 เดือนหลังเจอตัวกระตุ้น และต้องรักษาด้วยยาตลอดชีวิต",
+            "เกิดขึ้นเองโดยไม่มีตัวกระตุ้น และหายได้เองภายใน 2 สัปดาห์"
+          ],
+          answer: 1,
+          rationale: "Adjustment Disorder เกิดอาการทางอารมณ์/พฤติกรรมภายใน 3 เดือนหลังมีตัวกระตุ้นความเครียด และอาการจะไม่คงอยู่เกิน 6 เดือนหลังจากตัวกระตุ้นหรือผลกระทบสิ้นสุดลง"
+        }
+      ],
+      2: [
+        {
+          q: "ในเวลากลางคืนเมื่อไม่มีแสงเข้าสู่ดวงตา กลไกใดในสมองที่ทำให้เรารู้สึกง่วงและนอนหลับ?",
+          options: [
+            "SCN กระตุ้นให้ Pineal gland หลั่งสาร Adenosine",
+            "Pineal gland หลั่งฮอร์โมน Melatonin เนื่องจากไม่ถูกแสงยับยั้งผ่าน SCN",
+            "Adrenal gland หลั่งฮอร์โมน Cortisol เพื่อลดอุณหภูมิร่างกาย",
+            "Hypothalamus หยุดการสะสมของสาร Adenosine ทันที"
+          ],
+          answer: 1,
+          rationale: "แสงสว่างจะส่งสัญญาณผ่าน Retinohypothalamic tract ไปยัง SCN เพื่อยับยั้ง Pineal gland แต่เมื่ออยู่ในความมืด Pineal gland จะหลั่ง Melatonin ออกมาช่วยให้นอนหลับ"
+        },
+        {
+          q: "เงื่อนไขสำคัญข้อใดที่ทำให้ปัญหาการนอนหลับถูกวินิจฉัยว่าเป็น 'Insomnia Disorder'?",
+          options: [
+            "ต้องนอนหลับได้น้อยกว่า 5 ชั่วโมงทุกคืนติดต่อกัน 1 ปี",
+            "ต้องมีผลกระทบต่อการทำงานหรือการใช้ชีวิตในตอนกลางวัน (Daytime impairment)",
+            "ต้องเกิดจากการหยุดหายใจขณะหลับ (OSA) ร่วมด้วยเสมอ",
+            "ต้องใช้ยานอนหลับกลุ่ม Benzodiazepines แล้วไม่ได้ผล"
+          ],
+          answer: 1,
+          rationale: "หากมีอาการนอนหลับยากแต่ไม่มีผลกระทบในตอนกลางวัน (Daytime impairment เช่น อ่อนเพลีย สมาธิเสีย หงุดหงิด) จะยังไม่จัดว่าเป็น Insomnia Disorder"
+        },
+        {
+          q: "ข้อใดคือวิธีป้องกันการฆ่าตัวตายที่ได้รับการพิสูจน์แล้วว่ามีประสิทธิภาพดีที่สุด (Best way to prevent suicide)?",
+          options: [
+            "หลีกเลี่ยงการพูดถึงเรื่องการฆ่าตัวตายต่อหน้าผู้ที่มีความเสี่ยง",
+            "การนำอุปกรณ์หรือช่องทางในการทำร้ายตัวเองออกไปให้พ้นมือ (Removal of means of self-harm)",
+            "ปล่อยให้ผู้ป่วยอยู่ตามลำพังเพื่อทบทวนตนเอง",
+            "เพิกเฉยต่อคำขู่หากประเมินว่าทำไปเพื่อเรียกร้องความสนใจ"
+          ],
+          answer: 1,
+          rationale: "การนำอุปกรณ์ทำร้ายตัวเองออก (Removal of means of self-harm) เป็นวิธีป้องกันที่ได้ผลดีที่สุด และการพูดคุยเรื่องฆ่าตัวตายไม่ได้เพิ่มความเสี่ยง"
+        },
+        {
+          q: "หัวใจสำคัญของการทำจิตบำบัด (Psychotherapy) ตามที่บรรยายในบทเรียนคือข้อใด?",
+          options: [
+            "การสั่งการให้ผู้ป่วยทำตามคำแนะนำของแพทย์อย่างเคร่งครัด",
+            "การช่วยให้ผู้ป่วยสามารถช่วยเหลือตนเองได้ (Helping the patient to help themselves)",
+            "การปรับโครงสร้างสารสื่อประสาทด้วยกระแสไฟฟ้า",
+            "การลบความทรงจำในอดีตทั้งหมดของผู้ป่วย"
+          ],
+          answer: 1,
+          rationale: "Psychotherapy คือ 'Helping the patient to help themselves' ช่วยให้ผู้ป่วยเข้าใจตนเอง ปัญหา และหาทางจัดการความเครียดผ่านความเห็นอกเห็นใจ (Empathy)"
+        },
+        {
+          q: "เป้าหมายสูงสุดของการฟื้นฟูสมรรถภาพทางจิตสังคม (Psychosocial Rehabilitation) คืออะไร?",
+          options: [
+            "การทำให้ผู้ป่วยไม่ต้องพบจิตแพทย์อีกเลย",
+            "การพึ่งพาตนเองได้และกลับไปทำหน้าที่ในสังคมได้อย่างเต็มศักยภาพ (Independence & Full functioning)",
+            "การรักษาอาการคลุ้มคลั่งเฉียบพลันด้วยยาฉีด",
+            "การแยกผู้ป่วยออกจากชุมชนเพื่อความปลอดภัย"
+          ],
+          answer: 1,
+          rationale: "Psychosocial rehabilitation มุ่งเพิ่มคุณภาพชีวิตหลังอาการทุเลา โดยมีเป้าหมายคือ Independence & full functioning as a member of society"
+        }
+      ],
+      3: [
+        {
+          q: "หากผู้ใหญ่คนหนึ่งมีนิสัยเจ้าระเบียบสุดโต่ง ชอบความสมบูรณ์แบบ (Perfectionism) และขี้เหนียว ตามทฤษฎีของฟรอยด์เกิดจากภาวะติดตรึง (Fixation) ในขั้นใด?",
+          options: [
+            "Oral-Receptive Fixation",
+            "Anal-Retentive Fixation",
+            "Anal-Expulsive Fixation",
+            "Phallic Fixation"
+          ],
+          answer: 1,
+          rationale: "การฝึกขับถ่ายที่เข้มงวดเกินไปในขั้น Anal Stage ทำให้เกิด Anal-Retentive personality คือชอบเก็บกัก เจ้าระเบียบ สมบูรณ์แบบ และตระหนี่"
+        },
+        {
+          q: "ตามทฤษฎีพัฒนาการทางจิตสังคมของ Erikson วัยรุ่น (Adolescence: 12-18 ปี) เผชิญกับวิกฤตและจะได้รับ Ego Virtue ใดหากผ่านไปได้?",
+          options: [
+            "Industry vs. Inferiority — Virtue: Competence",
+            "Identity vs. Role Confusion — Virtue: Fidelity",
+            "Intimacy vs. Isolation — Virtue: Love",
+            "Initiative vs. Guilt — Virtue: Purpose"
+          ],
+          answer: 1,
+          rationale: "วัยรุ่น (12-18 ปี) คือขั้น Identity vs. Role Confusion ซึ่งนำไปสู่คุณธรรมแห่งความซื่อสัตย์มั่นคงในตัวตน (Fidelity)"
+        },
+        {
+          q: "การทดลองตุ๊กตาล้มลุก (Bobo Doll Experiment, 1961) ของ Albert Bandura พิสูจน์แนวคิดสำคัญข้อใด?",
+          options: [
+            "เด็กจะเรียนรู้พฤติกรรมก้าวร้าวก็ต่อเมื่อได้รับรางวัลตอบแทนโดยตรงเท่านั้น",
+            "มนุษย์สามารถเรียนรู้พฤติกรรมใหม่ๆ ผ่านการสังเกตและเลียนแบบตัวแบบ (Observational Learning) โดยไม่ต้องรับแรงเสริมโดยตรง",
+            "พฤติกรรมก้าวร้าวเกิดจากสัญชาตญาณ Thanatos ในจิตไร้สำนึก",
+            "เด็กอายุต่ำกว่า 7 ปีไม่สามารถแยกแยะความจริงกับจินตนาการได้"
+          ],
+          answer: 1,
+          rationale: "Bandura แสดงให้เห็นว่าเด็กเรียนรู้และเลียนแบบพฤติกรรมก้าวร้าวจากการสังเกตตัวแบบ (Modeling) โดยไม่ต้องลงมือทำหรือรับแรงเสริมโดยตรง"
+        },
+        {
+          q: "เด็กหญิงเอเห็นแม่เทน้ำจากแก้วเตี้ยที่อ้วนลงในแก้วทรงสูงที่ผอม แล้วตอบว่า 'แก้วทรงสูงมีน้ำมากกว่า' แสดงว่าเด็กหญิงเออยู่ในขั้นใดของ Piaget และมีข้อจำกัดเรื่องใด?",
+          options: [
+            "Sensorimotor Stage — ขาด Object Permanence",
+            "Preoperational Stage — มีข้อจำกัดเรื่อง Centration และขาด Conservation",
+            "Concrete Operational Stage — ขาด Hypothetical Reasoning",
+            "Formal Operational Stage — มีภาวะ Egocentrism"
+          ],
+          answer: 1,
+          rationale: "เด็กวัย Preoperational (2-7 ปี) มักโฟกัสที่มิติเดียวคือความสูง (Centration) และยังไม่เข้าใจกฎการอนุรักษ์ปริมาณ (Conservation)"
+        },
+        {
+          q: "ข้อใดเปรียบเทียบทฤษฎีของ Sigmund Freud และ Erik Erikson ได้ถูกต้อง?",
+          options: [
+            "ทฤษฎีของ Freud ครอบคลุมตลอดชีวิต ส่วน Erikson สิ้นสุดที่วัยรุ่น",
+            "ทฤษฎีของ Erikson ครอบคลุมตลอดช่วงชีวิต (8 ขั้น) และเน้นปฏิสัมพันธ์ทางสังคม ส่วน Freud สิ้นสุดที่วัยรุ่นและเน้นแรงขับทางชีวภาพ (Libido)",
+            "ทั้งสองทฤษฎีมีจำนวน 5 ขั้นเท่ากันและเน้นเรื่องจิตไร้สำนึกเหมือนกัน",
+            "Erikson เน้นเรื่องความผิดปกติทางเพศ ส่วน Freud เน้นเรื่องเอกลักษณ์ทางสังคม"
+          ],
+          answer: 1,
+          rationale: "Erikson ขยายพัฒนาการให้ครอบคลุมตลอดชีวิตตั้งแต่เกิดจนตาย (8 ขั้น) โดยเน้นสังคมและอัตลักษณ์ ส่วน Freud เน้นแรงขับทางเพศ (Libido) 5 ขั้น"
+        }
+      ],
+      4: [
+        {
+          q: "ตามโครงสร้างบุคลิกภาพของฟรอยด์ ส่วนใดที่ทำหน้าที่ประนีประนอมระหว่างความต้องการตามสัญชาตญาณกับกฎเกณฑ์ของโลกความเป็นจริง (Reality Principle)?",
+          options: [
+            "Id",
+            "Ego",
+            "Superego",
+            "Collective Unconscious"
+          ],
+          answer: 1,
+          rationale: "Ego ทำงานบนหลักความเป็นจริง (Reality principle) เพื่อหาทางตอบสนองความต้องการของ Id อย่างเหมาะสมในโลกความเป็นจริงโดยไม่ขัดกับ Superego"
+        },
+        {
+          q: "ในโมเดลบุคลิกภาพ Big-Five (OCEAN) บุคคลที่มีคะแนนด้าน 'Conscientiousness' สูงจะมีลักษณะอย่างไร?",
+          options: [
+            "ชอบจินตนาการ ศิลปะ และเปิดรับประสบการณ์แปลกใหม่",
+            "มีระเบียบวินัย วางแผนรอบคอบ พึ่งพาได้ และทำงานอย่างมีประสิทธิภาพ",
+            "วิตกกังวลง่าย อารมณ์แปรปรวน และอ่อนไหวต่อความเครียด",
+            "ชอบเข้าสังคม พูดเก่ง และมีพลังงานล้นเหลือ"
+          ],
+          answer: 1,
+          rationale: "Conscientiousness หมายถึงความมีระเบียบวินัย รอบคอบ วางแผนเก่ง รับผิดชอบ และพึ่งพาได้ (Efficient, organized, planful, reliable)"
+        },
+        {
+          q: "ตามแนวคิดของ Abraham Maslow บุคคลที่มี 'Growth Orientation' มีลักษณะแตกต่างจาก 'Deficiency Orientation' อย่างไร?",
+          options: [
+            "หมกมุ่นอยู่กับสิ่งที่ตนเองยังขาดแคลนและวัตถุสิ่งของ",
+            "ไม่ยึดติดกับสิ่งที่ขาด แต่สร้างความพึงพอใจและเติบโตจากสิ่งที่มี สิ่งที่เป็น และสิ่งที่ทำได้",
+            "ปฏิเสธความต้องการทางกายภาพและไม่สนใจการยอมรับจากสังคม",
+            "เชื่อว่าตนเองไม่สามารถพัฒนาศักยภาพไปถึงขั้น Self-Actualization ได้"
+          ],
+          answer: 1,
+          rationale: "Growth orientation คือการไม่โฟกัสที่สิ่งที่ขาดหายไป แต่ดึงความพึงพอใจและการเติบโตมาจากสิ่งที่มีอยู่ เป็นอยู่ และทำได้"
+        },
+        {
+          q: "ข้อใดกล่าวถูกต้องเกี่ยวกับแบบประเมินบุคลิกภาพ Myers-Briggs Type Indicator (MBTI)?",
+          options: [
+            "แบ่งบุคลิกภาพออกเป็น 16 แบบ และสามารถระบุได้ว่า Type ใดฉลาดและประสบความสำเร็จที่สุด",
+            "เป็นการจัดกลุ่มความถนัด/ความชอบส่วนบุคคล (Preferences) 16 แบบ โดยไม่มีแบบที่ดีที่สุด",
+            "ใช้วินิจฉัยโรคบุคลิกภาพแปรปรวน (Personality Disorders) ในทางคลินิก",
+            "วัดระดับสติปัญญา (IQ) และความสามารถในการทำงานโดยตรง"
+          ],
+          answer: 1,
+          rationale: "MBTI พัฒนาขึ้นเพื่อทำความเข้าใจความแตกต่างของมนุษย์ 16 แบบ โดยจัดกลุ่มตามความถนัด (Preferences) ไม่มี Type ไหนดีที่สุด และไม่ได้วัดความสามารถหรือนิสัยดี/เลว"
+        },
+        {
+          q: "จากงานวิจัยด้านการสื่อสารและ First Impression หากเราสร้างความประทับใจแรกที่เป็นลบไว้ จะต้องใช้ปฏิสัมพันธ์เชิงบวกกี่ครั้งจึงจะเปลี่ยนความคิดของอีกฝ่ายได้?",
+          options: [
+            "2 ครั้ง",
+            "4 ครั้ง",
+            "8 ครั้ง",
+            "15 ครั้ง"
+          ],
+          answer: 2,
+          rationale: "งานวิจัยจาก Harvard ระบุว่าต้องใช้ปฏิสัมพันธ์เชิงบวกตามมาถึง 8 ครั้ง (8 subsequent positive encounters) จึงจะเปลี่ยนมุมมองเชิงลบของผู้อื่นที่มีต่อเราได้"
+        }
+      ],
+      5: [
+        {
+          q: "เมื่อเพื่อนร่วมชั้นมาสาย เราคิดว่า 'เขาเป็นคนขี้เกียจและไม่มีความรับผิดชอบ' แต่เมื่อเรามาสายเอง เรากลับบอกว่า 'วันนี้รถติดมากและฝนตก' ปรากฏการณ์นี้สะท้อนอคติใด?",
+          options: [
+            "Halo Effect และ Mere Exposure Effect",
+            "Fundamental Attribution Error และ Actor-Observer Effect",
+            "Contact Hypothesis และ Social Comparison",
+            "Foot-in-the-door และ Low-ball Technique"
+          ],
+          answer: 1,
+          rationale: "การโทษนิสัยของผู้อื่นคือ Fundamental Attribution Error ส่วนการอธิบายพฤติกรรมตนเองด้วยสถานการณ์ภายนอกคือ Actor-Observer Effect"
+        },
+        {
+          q: "การที่เรามองว่าดาราหรือบุคคลที่หน้าตาดีน่าจะเป็นคนฉลาด ใจดี และมีความสามารถสูงด้วย เรียกว่าอคติทางความคิดแบบใด?",
+          options: [
+            "Matching Hypothesis",
+            "Halo Effect",
+            "Self-Serving Bias",
+            "Stereotype Threat"
+          ],
+          answer: 1,
+          rationale: "Halo Effect คืออคติที่ความดึงดูดใจทางกายภาพทำให้เราเหมารวมว่าบุคคลนั้นมีคุณสมบัติเชิงบวกด้านอื่นๆ (เช่น ความฉลาด ความอบอุ่น) ร่วมด้วย"
+        },
+        {
+          q: "พนักงานขายบอกราคารถยนต์ที่ถูกมากจนลูกค้าตกลงเซ็นสัญญาจอง จากนั้นจึงแจ้งว่า 'ราคานี้ยังไม่รวมภาษีและค่าอุปกรณ์พื้นฐานที่จำเป็น' เทคนิคนี้เรียกว่าอะไร?",
+          options: [
+            "Door-in-the-face Technique",
+            "Foot-in-the-door Technique",
+            "Low-ball Technique",
+            "Conformity Pressure"
+          ],
+          answer: 2,
+          rationale: "Low-ball Technique คือการเสนอข้อเสนอที่น่าดึงดูดใจเพื่อให้เหยื่อตกลงผูกมัด (Commitment) ก่อน แล้วจึงเพิ่มราคาหรือเงื่อนไขที่แท้จริงในภายหลัง"
+        },
+        {
+          q: "จากการทดลองของ Stanley Milgram (1963) เกี่ยวกับการเชื่อฟังผู้มีอำนาจ (Obedience) ปัจจัยใดที่มีพลังมากที่สุดในการลดการเชื่อฟังคำสั่งให้ทำร้ายผู้อื่น?",
+          options: [
+            "การเพิ่มระดับเสียงร้องของเหยื่อ",
+            "การเห็นผู้อื่นในสถานการณ์เดียวกันกล้าขัดขืนไม่ทำตามคำสั่ง (Presence of others who disobey)",
+            "การที่ผู้สั่งสวมชุดสูทแทนชุดกาวน์",
+            "การทำแบบทดสอบความฉลาดก่อนการทดลอง"
+          ],
+          answer: 1,
+          rationale: "การมีบุคคลอื่นที่กล้าขัดขืนคำสั่ง (Presence of others who disobey) เป็นปัจจัยที่มีอิทธิพลมากที่สุดในการทำให้ผู้ทดลองกล้าปฏิเสธคำสั่งที่เป็นอันตราย"
+        },
+        {
+          q: "แนวคิดใดที่เสนอว่าอคติและการเหมารวม (Prejudice & Stereotypes) ต่อกลุ่มคนอื่นจะลดลงได้เมื่อเพิ่มการติดต่อปฏิสัมพันธ์กับกลุ่มนั้น?",
+          options: [
+            "Mere Exposure Hypothesis",
+            "Contact Hypothesis",
+            "Matching Hypothesis",
+            "Reciprocal Determinism"
+          ],
+          answer: 1,
+          rationale: "Contact Hypothesis ระบุว่าอคติและภาพเหมารวมที่มีต่อกลุ่มใดกลุ่มหนึ่งจะลดลงเมื่อมีการติดต่อสื่อสารและทำกิจกรรมร่วมกับกลุ่มนั้นมากขึ้น"
+        }
+      ],
+      6: [
+        {
+          q: "สภาวะ 'Flow State' ในกระบวนการสร้างสรรค์งานศิลปะส่งผลดีต่อสุขภาพจิตอย่างไร?",
+          options: [
+            "กระตุ้นให้เกิดการคิดวนซ้ำถึงอดีต (Rumination) เพื่อวิเคราะห์ปัญหา",
+            "ตัดวงจรการคิดวนซ้ำเชิงลบ (Negative rumination) และทำให้ระบบประสาทสงบอยู่กับปัจจุบัน",
+            "ยับยั้งการทำงานของ Prefrontal Cortex เพื่อลดการใช้เหตุผล",
+            "สร้างความกดดันให้ศิลปินมุ่งเน้นความสมบูรณ์แบบ (Perfectionism)"
+          ],
+          answer: 1,
+          rationale: "Flow State คือสภาวะจดจ่ออย่างมีความสุขในกระบวนการทำศิลปะ ซึ่งช่วยหยุดวงจร Negative rumination และเชื่อมโยงระบบประสาทให้อยู่กับปัจจุบัน"
+        },
+        {
+          q: "กระบวนการ 'Catharsis' ผ่านงานศิลปะช่วยเยียวยาจิตใจได้ด้วยกลไกใด?",
+          options: [
+            "การเก็บกดความรู้สึกไว้ภายใน (Internalizing) เพื่อไม่ให้กระทบผู้อื่น",
+            "การถ่ายทอดอารมณ์ที่ซับซ้อนออกมาเป็นวัตถุภายนอก (Externalizing) ช่วยลดภาระทางใจและได้เฝ้ามองประสบการณ์ตนเอง",
+            "การลืมเหตุการณ์สะเทือนใจทั้งหมดอย่างถาวร",
+            "การเปรียบเทียบผลงานตนเองกับมาตรฐานความสมจริงแบบตะวันตก"
+          ],
+          answer: 1,
+          rationale: "Catharsis เปลี่ยนจาก Internalizing (ภาระทางความคิดที่วนซ้ำ) เป็น Externalizing (ถ่ายทอดออกเป็นชิ้นงาน) ช่วยลดภาระทางจิตใจ"
+        },
+        {
+          q: "ทฤษฎี 'Extended Mind Thesis' อธิบายความสัมพันธ์ระหว่างศิลปะกับตัวตน (Self-Identity) ว่าอย่างไร?",
+          options: [
+            "ตัวตนของมนุษย์ถูกกักเก็บไว้ในสมองส่วนหน้าเท่านั้น",
+            "มนุษย์สร้างและยึดโยงอัตลักษณ์ ความทรงจำ และวัฒนธรรมไว้ในวัตถุศิลปะภายนอก (Cognitive Anchor)",
+            "งานศิลปะเป็นเพียงสิ่งของตกแต่งที่ไม่เกี่ยวข้องกับจิตใจผู้สร้าง",
+            "ความหมายของงานศิลปะถูกกำหนดตายตัวโดยผู้สร้างเพียงฝ่ายเดียว"
+          ],
+          answer: 1,
+          rationale: "Extended Mind Thesis ระบุว่าตัวตนไม่ได้อยู่แค่ในสมอง แต่ถูกยึดโยง (Anchor) ไว้ในวัตถุทางกายภาพภายนอกซึ่งทำหน้าที่เป็นส่วนขยายของตัวตน"
+        },
+        {
+          q: "ในจิตรกรรมไทย (Jitragum Thai) องค์ประกอบใดที่ทำหน้าที่เป็นเส้นซิกแซกเพื่อแบ่งฉากและช่วงเวลาออกจากกัน?",
+          options: [
+            "ลายเกล็ดปลา (Lai Klet Pla)",
+            "เส้นสินเทา (Sin Thao Line)",
+            "ทัศนียภาพแบบจุดรวมสายตา (Vanishing Point)",
+            "ลายกนกเปลว (Lai Kanok)"
+          ],
+          answer: 1,
+          rationale: "เส้นสินเทา (Sin Thao line) คือเส้นซิกแซกหรือเส้นสายฟ้าที่ใช้แบ่งฉาก เหตุการณ์ และช่วงเวลาในจิตรกรรมไทย ส่วนลายเกล็ดปลาใช้แทนคลื่นน้ำ"
+        },
+        {
+          q: "ข้อใดคือความแตกต่างสำคัญระหว่างสุนทรียศาสตร์แบบตะวันออก/ไทย (Eastern/Thai) กับแบบตะวันตก (Western)?",
+          options: [
+            "ตะวันออกเน้นความสมจริงทางกายภาพ (Realism) ส่วนตะวันตกเน้นความกลมกลืนทางจิตวิญญาณ",
+            "ตะวันออกเน้นการตระหนักรู้จากภายใน (Inside-Out) ความกลมกลืน และความงามที่ผสานความดีงาม ส่วนตะวันตกเน้นตัวตน (Ego) และความสมจริง",
+            "ตะวันตกเน้นการเล่าเรื่องของชุมชน ส่วนตะวันออกเน้นการท้าทายและทำลายกรอบเดิม",
+            "ทั้งสองแนวทางมีมาตรฐานความงามที่เหมือนกันทุกประการ"
+          ],
+          answer: 1,
+          rationale: "Eastern/Thai aesthetics เน้น Inside-Out awareness, harmony, spiritual synthesis และ aesthetic contemplation (ความจริงและความดีงาม) ขณะที่ Western เน้น Ego, individual psychology และ realism"
+        }
+      ]
+    };
+
+    // =========================================================================
+    // ENGLISH MOCK EXAM (30 HIGH-YIELD UNIVERSITY-LEVEL QUESTIONS)
+    // =========================================================================
+    const mockExamQuestions = [
+      // Chapter 1: Psychiatry (5 Qs)
+      {
+        id: 1,
+        chapter: 1,
+        question: "Who first coined the term 'psychiatry' in 1808, and what is its literal translation?",
+        options: [
+          "Sigmund Freud; 'exploration of the unconscious'",
+          "Johann Christian Reil; 'medical treatment of the soul'",
+          "Wilhelm Wundt; 'scientific study of behavior'",
+          "Emil Kraepelin; 'classification of mental illness'"
+        ],
+        answer: 1,
+        rationaleEng: "German physician Johann Christian Reil coined 'psychiatry' in 1808 from psych- (soul) and -iatry (medical treatment).",
+        rationaleThai: "Johann Christian Reil แพทย์ชาวเยอรมันบัญญัติคำว่า Psychiatry ในปี 1808 แปลว่า 'การรักษาทางการแพทย์สำหรับจิตวิญญาณ'"
+      },
+      {
+        id: 2,
+        chapter: 1,
+        question: "During a chronic stress response, prolonged elevation of cortisol via the HPA axis causes cellular damage primarily in which brain structure, leading to memory and attention deficits?",
+        options: [
+          "Cerebellum",
+          "Hippocampus",
+          "Occipital cortex",
+          "Pineal gland"
+        ],
+        answer: 1,
+        rationaleEng: "Chronic glucocorticoid (cortisol) elevation damages neurons in the hippocampus, impairing attention, memory, and learning.",
+        rationaleThai: "Cortisol ที่สูงต่อเนื่องจากความเครียดเรื้อรังทำให้เกิดความเสียหายระดับเซลล์ในสมองส่วน Hippocampus ส่งผลให้ความจำและสมาธิบกพร่อง"
+      },
+      {
+        id: 3,
+        chapter: 1,
+        question: "A clinician observes a patient crying and rapidly shifting facial expressions during an interview, though the patient reports feeling 'empty inside' for the past three weeks. The clinician's observation of the patient's external emotional expression refers to:",
+        options: [
+          "Mood",
+          "Affect",
+          "Eustress",
+          "Temperament"
+        ],
+        answer: 1,
+        rationaleEng: "Affect is the external, shifting expression of emotional state evaluated by a clinician, whereas mood is internal and sustained.",
+        rationaleThai: "Affect คือการแสดงออกทางอารมณ์ภายนอกที่เปลี่ยนแปลงได้เร็วและผู้ตรวจสังเกตได้ ส่วน Mood คือพื้นอารมณ์ภายในที่คงอยู่นาน"
+      },
+      {
+        id: 4,
+        chapter: 1,
+        question: "According to DSM-5 criteria, which symptom profile is required to diagnose Bipolar I Disorder?",
+        options: [
+          "At least two major depressive episodes without any history of elevated mood",
+          "At least one manic episode, with or without a history of major depressive episodes",
+          "Recurrent unexpected panic attacks followed by one month of avoidance",
+          "Depressed mood lasting at least two years without meeting full criteria for mania"
+        ],
+        answer: 1,
+        rationaleEng: "Bipolar I Disorder is defined by the occurrence of at least one manic episode; major depressive episodes are common but not strictly required for diagnosis.",
+        rationaleThai: "Bipolar I Disorder วินิจฉัยจากการมี Manic episode อย่างน้อย 1 ครั้ง โดยอาจมีหรือไม่มี Major depressive episode ร่วมด้วยก็ได้"
+      },
+      {
+        id: 5,
+        chapter: 1,
+        question: "Three weeks after losing her job, a 28-year-old woman develops marked anxiety, insomnia, and depressed mood out of proportion to the stressor. Once she finds a new job and the stressor resolves, her symptoms disappear within two months. What is the most likely diagnosis?",
+        options: [
+          "Agoraphobia",
+          "Adjustment Disorder",
+          "Persistent Depressive Disorder",
+          "Bipolar I Disorder"
+        ],
+        answer: 1,
+        rationaleEng: "Adjustment disorder develops within 3 months of an identifiable stressor and resolves within 6 months after the stressor terminates.",
+        rationaleThai: "Adjustment Disorder เกิดขึ้นภายใน 3 เดือนหลังเผชิญความเครียด และอาการจะหายไปภายใน 6 เดือนหลังจากตัวกระตุ้นสิ้นสุดลง"
+      },
+
+      // Chapter 2: Mental Illness, Sleep, Suicide & Treatment (5 Qs)
+      {
+        id: 6,
+        chapter: 2,
+        question: "How does exposure to bright blue light from a smartphone screen right before bedtime disrupt the biological sleep mechanism?",
+        options: [
+          "It accelerates adenosine accumulation in the prefrontal cortex",
+          "It stimulates the SCN via the retinohypothalamic tract to inhibit melatonin secretion from the pineal gland",
+          "It triggers upper airway obstruction during REM sleep",
+          "It directly blocks GABA receptors in the brainstem"
+        ],
+        answer: 1,
+        rationaleEng: "Light travels via the retinohypothalamic tract to the suprachiasmatic nucleus (SCN), which inhibits the pineal gland from secreting melatonin.",
+        rationaleThai: "แสงกระตุ้น SCN ผ่าน Retinohypothalamic tract ส่งผลให้ Pineal gland ถูกยับยั้งและไม่หลั่งฮอร์โมน Melatonin"
+      },
+      {
+        id: 7,
+        chapter: 2,
+        question: "A college student sleeps only 5 hours per night due to late-night gaming, yet wakes up refreshed, performs well in exams, and feels energetic all day. Why would this student NOT be diagnosed with Insomnia Disorder?",
+        options: [
+          "Insomnia requires sleeping fewer than 3 hours per night",
+          "There is an absence of daytime impairment",
+          "Circadian rhythm disorders cannot occur in young adults",
+          "Insomnia only occurs in geriatric populations"
+        ],
+        answer: 1,
+        rationaleEng: "Sleep-related complaints in the absence of daytime impairment (fatigue, cognitive impairment, irritability) are not classified as an insomnia disorder.",
+        rationaleThai: "เกณฑ์สำคัญของ Insomnia Disorder คือต้องมีผลกระทบในตอนกลางวัน (Daytime impairment) หากใช้ชีวิตตอนกลางวันได้ปกติจะไม่ถือว่าเป็นโรค"
+      },
+      {
+        id: 8,
+        chapter: 2,
+        question: "Which intervention has the strongest evidence as the single most effective method for suicide prevention?",
+        options: [
+          "Avoiding any mention of suicide when talking to distressed individuals",
+          "Removal of means of self-harm (restricting access to lethal methods)",
+          "Advising patients to rely solely on willpower to overcome hopelessness",
+          "Hospitalizing every individual who reports transient sadness"
+        ],
+        answer: 1,
+        rationaleEng: "Removal of means of self-harm is proven to be the best way to prevent suicide, while talking about suicide does NOT increase risk.",
+        rationaleThai: "การนำอุปกรณ์หรือช่องทางทำร้ายตัวเองออกไปให้พ้นมือ (Removal of means of self-harm) คือวิธีป้องกันที่ได้ผลดีที่สุด"
+      },
+      {
+        id: 9,
+        chapter: 2,
+        question: "Which statement best captures the core philosophy and mechanism of Psychotherapy?",
+        options: [
+          "Replacing neurotransmitter deficiencies exclusively via G-protein receptors",
+          "Helping the patient to help themselves through empathy, exploration, and self-understanding",
+          "Inducing controlled seizures using electrical currents to reset brain circuits",
+          "Isolating patients from social environments to prevent emotional triggers"
+        ],
+        answer: 1,
+        rationaleEng: "Psychotherapy is defined as 'helping the patient to help themselves' by fostering insight and coping skills through empathy.",
+        rationaleThai: "Psychotherapy มีหลักการคือ 'Helping the patient to help themselves' ผ่านการสำรวจทำความเข้าใจและความเห็นอกเห็นใจ (Empathy)"
+      },
+      {
+        id: 10,
+        chapter: 2,
+        question: "After recovering from an acute psychotic episode, a patient is enrolled in vocational training and community living programs. What is the primary goal of this Psychosocial Rehabilitation?",
+        options: [
+          "Suppressing circadian wake drive",
+          "Achieving independence and full functioning as a member of society",
+          "Diagnosing underlying genetic vulnerabilities",
+          "Inducing intentional sleep deprivation"
+        ],
+        answer: 1,
+        rationaleEng: "Psychosocial rehabilitation aims to improve quality of life after recovery, with the ultimate goal of independence and full societal functioning.",
+        rationaleThai: "เป้าหมายของ Psychosocial rehabilitation คือการช่วยให้ผู้ป่วยพึ่งพาตนเองได้และกลับไปใช้ชีวิตในสังคมได้อย่างเต็มศักยภาพ"
+      },
+
+      // Chapter 3: Human Development (5 Qs)
+      {
+        id: 11,
+        chapter: 3,
+        question: "According to Freud's psychosexual theory, an adult who frequently uses biting sarcasm, chews on pens, and exhibits verbal hostility likely experienced fixation during which stage?",
+        options: [
+          "Oral stage (Oral-aggressive)",
+          "Anal stage (Anal-retentive)",
+          "Phallic stage",
+          "Latency period"
+        ],
+        answer: 0,
+        rationaleEng: "Unresolved conflict or early weaning in the oral stage can lead to oral-aggressive traits such as nail-biting and biting sarcasm.",
+        rationaleThai: "การติดตรึงในขั้น Oral stage แบบ Oral-aggressive มักแสดงออกผ่านการกัดเล็บหรือคำพูดเสียดสี (Sarcasm)"
+      },
+      {
+        id: 12,
+        chapter: 3,
+        question: "A 45-year-old engineer feels a strong desire to mentor younger colleagues and contribute meaningfully to future generations rather than focusing solely on personal wealth. According to Erikson, successfully resolving this stage yields which ego virtue?",
+        options: [
+          "Fidelity",
+          "Care",
+          "Wisdom",
+          "Competence"
+        ],
+        answer: 1,
+        rationaleEng: "Middle adulthood (40-65 years) centers on Generativity vs. Stagnation, whose positive ego virtue is Care.",
+        rationaleThai: "วัยผู้ใหญ่ตอนกลาง (40-65 ปี) คือขั้น Generativity vs. Stagnation ซึ่งคุณธรรมหลักที่ได้รับคือ Care (ความใส่ใจดูแลคนรุ่นหลัง)"
+      },
+      {
+        id: 13,
+        chapter: 3,
+        question: "In Bandura's concept of Triadic Reciprocal Determinism, human functioning is continuously shaped by the interaction among which three factors?",
+        options: [
+          "Id, Ego, and Superego",
+          "Personal/Cognitive factors, Behavior, and Environment",
+          "Trust, Autonomy, and Initiative",
+          "Sensorimotor, Preoperational, and Concrete schemas"
+        ],
+        answer: 1,
+        rationaleEng: "Bandura's triadic reciprocal determinism proposes continuous mutual influence among Person (P), Behavior (B), and Environment (E).",
+        rationaleThai: "Triadic Reciprocal Determinism ของ Bandura ประกอบด้วย 3 ปัจจัยที่ส่งผลต่อกันคือ Personal (P), Behavior (B) และ Environment (E)"
+      },
+      {
+        id: 14,
+        chapter: 3,
+        question: "A 4-year-old child covers her eyes during hide-and-seek and believes that because she cannot see her parents, they cannot see her either. Piaget termed this cognitive limitation:",
+        options: [
+          "Object permanence",
+          "Egocentrism",
+          "Seriation",
+          "Metacognition"
+        ],
+        answer: 1,
+        rationaleEng: "Egocentrism in the preoperational stage (2-7 years) is the inability to adopt the perspective of others.",
+        rationaleThai: "Egocentrism ในขั้น Preoperational คือการที่เด็กยังไม่สามารถมองมุมมองของผู้อื่นได้ ยึดมุมมองตนเองเป็นศูนย์กลาง"
+      },
+      {
+        id: 15,
+        chapter: 3,
+        question: "At which stage of Piaget's cognitive development do children master conservation tasks, decentration, and classification, while still being restricted to tangible, concrete objects?",
+        options: [
+          "Sensorimotor stage",
+          "Preoperational stage",
+          "Concrete operational stage",
+          "Formal operational stage"
+        ],
+        answer: 2,
+        rationaleEng: "In the Concrete Operational stage (7-11 years), children achieve conservation and logical operations for tangible objects, before abstract thought emerges in Formal Operational.",
+        rationaleThai: "ขั้น Concrete Operational (7-11 ปี) เด็กเข้าใจการอนุรักษ์ (Conservation) และตรรกะกับสิ่งของที่จับต้องได้ แต่ยังไม่สามารถคิดเชิงนามธรรมซับซ้อนได้"
+      },
+
+      // Chapter 4: Self & Personality (5 Qs)
+      {
+        id: 16,
+        chapter: 4,
+        question: "Which component of Freud's personality structure operates on the 'perfection principle,' internalizing parental and cultural moral standards?",
+        options: [
+          "Id",
+          "Ego",
+          "Superego",
+          "Preconscious"
+        ],
+        answer: 2,
+        rationaleEng: "The Superego represents internalized moral standards and operates on the perfection/moral principle.",
+        rationaleThai: "Superego ทำหน้าที่เป็นมโนธรรมและมาตรฐานศีลธรรมของสังคม ยึดหลักความสมบูรณ์แบบ (Perfection principle)"
+      },
+      {
+        id: 17,
+        chapter: 4,
+        question: "In the Big-Five (OCEAN) model of personality, an individual who is imaginative, intellectually curious, and appreciative of art scores high on:",
+        options: [
+          "Openness",
+          "Conscientiousness",
+          "Agreeableness",
+          "Neuroticism"
+        ],
+        answer: 0,
+        rationaleEng: "Openness is defined by traits such as artistic, curious, imaginative, insightful, and wide intellectual interests.",
+        rationaleThai: "Openness หมายถึงความเปิดกว้างทางความคิด มีจินตนาการ สนใจศิลปะ และอยากรู้อยากเห็น"
+      },
+      {
+        id: 18,
+        chapter: 4,
+        question: "According to Bandura, when an individual has low perceived self-efficacy AND believes that other people are successfully enjoying the benefits of their own efforts, what is the likely psychological outcome?",
+        options: [
+          "Grandiosity and mania",
+          "Self-criticism and depression",
+          "Growth orientation",
+          "Anal-retentive perfectionism"
+        ],
+        answer: 1,
+        rationaleEng: "Low self-efficacy combined with the belief that others succeed through effort leads to self-criticism and depression (whereas believing no one can succeed leads to apathy).",
+        rationaleThai: "หากมี Low self-efficacy และเห็นว่าคนอื่นทำสำเร็จได้ยกเว้นตนเอง จะนำไปสู่การตำหนิตนเองและภาวะซึมเศร้า (Self-criticism and depression)"
+      },
+      {
+        id: 19,
+        chapter: 4,
+        question: "In Maslow's Hierarchy of Needs, which level must generally be satisfied immediately before an individual can focus on 'Esteem' needs?",
+        options: [
+          "Self-actualization",
+          "Love and Belonging",
+          "Safety needs",
+          "Physiological needs"
+        ],
+        answer: 2,
+        rationaleEng: "Wait—let's check the hierarchy order from bottom to top: 1. Physiological -> 2. Safety -> 3. Love/Belonging -> 4. Esteem -> 5. Self-actualization. So 'Love and Belonging' is immediately below Esteem!",
+        rationaleThai: "ลำดับขั้นของ Maslow จากล่างขึ้นบนคือ Physiological → Safety → Love/Belonging → Esteem → Self-actualization ดังนั้นขั้นที่อยู่ก่อน Esteem ทันทีคือ Love and Belonging"
+      },
+      {
+        id: 20,
+        chapter: 4,
+        question: "Research on nonverbal communication indicates that when conveying a message, what percentage of the total impact comes from body language, voice tone, and spoken words respectively?",
+        options: [
+          "7% body language, 38% voice, 55% words",
+          "55% body language, 38% voice, 7% words",
+          "38% body language, 55% words, 7% voice",
+          "50% body language, 25% voice, 25% words"
+        ],
+        answer: 1,
+        rationaleEng: "Communication research demonstrates that total message impact is 55% body language, 38% voice, and 7% spoken words.",
+        rationaleThai: "สัดส่วนอิทธิพลของการสื่อสารคือ 55% ภาษากาย (Body language), 38% น้ำเสียง (Voice) และ 7% คำพูด (Words)"
+      },
+
+      // Chapter 5: Social Psychology (5 Qs)
+      {
+        id: 21,
+        chapter: 5,
+        question: "After acing a difficult exam, Mark credits his superior intelligence and hard work. However, after failing the next exam, he blames the professor for writing unfair questions. This pattern illustrates:",
+        options: [
+          "Fundamental attribution error",
+          "Self-serving bias",
+          "Mere exposure effect",
+          "Matching hypothesis"
+        ],
+        answer: 1,
+        rationaleEng: "Self-serving bias is the tendency to attribute one's successes to internal factors and one's failures to external factors.",
+        rationaleThai: "Self-Serving Bias คือการให้เหตุผลว่าความสำเร็จเกิดจากความสามารถภายในตนเอง แต่เมื่อล้มเหลวกลับโทษปัจจัยภายนอก"
+      },
+      {
+        id: 22,
+        chapter: 5,
+        question: "Students initially feel neutral about a new background song played daily in the university cafeteria. By the end of the semester, most students report liking the song. Which principle explains this?",
+        options: [
+          "Halo effect",
+          "Mere exposure effect",
+          "Door-in-the-face technique",
+          "Actor-observer effect"
+        ],
+        answer: 1,
+        rationaleEng: "The mere exposure effect states that repeated exposure to a novel stimulus increases liking for it, provided the initial reaction was neutral or positive.",
+        rationaleThai: "Mere Exposure Effect คือการได้พบเห็นหรือได้ยินสิ่งเร้าเดิมซ้ำๆ ทำให้เกิดความชอบมากขึ้น (หากความรู้สึกแรกเป็นกลางหรือบวก)"
+      },
+      {
+        id: 23,
+        chapter: 5,
+        question: "A charity volunteer asks a pedestrian to donate $500. When the pedestrian refuses, the volunteer immediately asks, 'Would you at least consider donating $5?' and the pedestrian agrees. This compliance strategy is called:",
+        options: [
+          "Foot-in-the-door technique",
+          "Door-in-the-face technique",
+          "Low-ball technique",
+          "Social comparison"
+        ],
+        answer: 1,
+        rationaleEng: "Door-in-the-face involves making an extravagant initial request that is rejected, followed by a smaller, more reasonable target request.",
+        rationaleThai: "Door-in-the-face คือการขอสิ่งที่ใหญ่เกินจริงเพื่อให้ถูกปฏิเสธก่อน แล้วจึงลดขนาดคำขอลงมาเป็นสิ่งที่ต้องการจริงๆ"
+      },
+      {
+        id: 24,
+        chapter: 5,
+        question: "How does 'Conformity' fundamentally differ from 'Obedience' in social influence?",
+        options: [
+          "Conformity results from unspoken group pressure, whereas obedience is a response to a direct command from an authority figure",
+          "Conformity involves a direct request from a peer, whereas obedience happens only in isolation",
+          "Conformity decreases as group size grows, whereas obedience increases with group size",
+          "Conformity is always harmful, whereas obedience is always prosocial"
+        ],
+        answer: 0,
+        rationaleEng: "Conformity is changing behavior to match others due to unspoken group pressure, while obedience comes in response to a demand from an authority figure.",
+        rationaleThai: "Conformity เกิดจากแรงกดดันของกลุ่มโดยไม่จำเป็นต้องพูดสั่ง ส่วน Obedience เกิดจากการตอบสนองต่อคำสั่งโดยตรงของผู้มีอำนาจ (Authority figure)"
+      },
+      {
+        id: 25,
+        chapter: 5,
+        question: "According to Gordon Allport's definition, Social Psychology investigates how an individual's thoughts, feelings, and behaviors are influenced by what kind of presence of others?",
+        options: [
+          "Only physical, face-to-face presence",
+          "Actual, imagined, or implied presence of others",
+          "Unconscious biological instincts only",
+          "Genetic inheritance across generations"
+        ],
+        answer: 1,
+        rationaleEng: "Allport (1954) defined social psychology as explaining how thoughts, feelings, and behavior are influenced by the actual, imagined, or implied presence of others.",
+        rationaleThai: "Allport (1954) นิยามว่าจิตวิทยาสังคมศึกษาอิทธิพลของการมีอยู่ของผู้อื่นทั้งที่เกิดขึ้นจริง (Actual) จินตนาการ (Imagined) หรือโดยนัย (Implied)"
+      },
+
+      // Chapter 6: Art & Self-Disclosure (5 Qs)
+      {
+        id: 26,
+        chapter: 6,
+        question: "In the psychology of art-making, how does entering a 'Flow State' promote emotional resilience?",
+        options: [
+          "By amplifying negative rumination so emotions can be analyzed logically",
+          "By breaking the cycle of negative rumination and grounding the nervous system in the present",
+          "By suppressing activity in the prefrontal cortex and amygdala",
+          "By forcing the artist to achieve strict photorealistic perfection"
+        ],
+        answer: 1,
+        rationaleEng: "Flow state immerses the creator in the process, breaking negative rumination cycles and grounding the nervous system in the present.",
+        rationaleThai: "Flow State ช่วยตัดวงจรการคิดวนซ้ำเชิงลบ (Negative rumination) และดึงระบบประสาทให้สงบอยู่กับปัจจุบัน"
+      },
+      {
+        id: 27,
+        chapter: 6,
+        question: "According to the 'Extended Mind Thesis' applied to art, what role does a physical artwork play in human identity?",
+        options: [
+          "It acts as a cognitive anchor that off-loads and extends self-identity into the physical world",
+          "It proves that human memory is strictly confined within neural synapses",
+          "It serves purely as a commercial commodity without psychological value",
+          "It prevents the audience from projecting their own interpretations"
+        ],
+        answer: 0,
+        rationaleEng: "The Extended Mind Thesis proposes that artworks serve as cognitive anchors and material vehicles extending self-identity into the physical world.",
+        rationaleThai: "Extended Mind Thesis อธิบายว่างานศิลปะทำหน้าที่เป็นจุดยึดโยงทางความคิด (Cognitive anchor) ที่ขยายอัตลักษณ์ของมนุษย์สู่โลกภายนอก"
+      },
+      {
+        id: 28,
+        chapter: 6,
+        question: "In the 'Proto-Environment' model of art as communication, where does the meaning of an artwork actually emerge?",
+        options: [
+          "Solely inside the isolated mind of the artist before creation",
+          "Dynamically in the space between the Creator, the Artwork, and the Witness (audience)",
+          "Strictly from art critics' historical textbooks",
+          "From realistic facial expressions painted on figures"
+        ],
+        answer: 1,
+        rationaleEng: "Meaning in the proto-environment is not static; it is co-constructed dynamically between the Creator, Artwork, and Witness.",
+        rationaleThai: "ความหมายใน Proto-Environment ไม่ได้หยุดนิ่ง แต่เกิดขึ้นและถูกสร้างร่วมกันระหว่างผู้สร้าง (Creator) ผลงาน (Artwork) และผู้ชม (Witness)"
+      },
+      {
+        id: 29,
+        chapter: 6,
+        question: "Which artistic convention in traditional Thai painting (Jitragum Thai) uses a zig-zag or lightning-like border to separate different scenes and time periods?",
+        options: [
+          "Lai Klet Pla (Fish Scale Design)",
+          "The Sin Thao Line",
+          "Bird's Eye View perspective",
+          "Biological realism"
+        ],
+        answer: 1,
+        rationaleEng: "The Sin Thao line is the distinctive zig-zag border used in Thai painting to separate scenes and temporal sequences.",
+        rationaleThai: "เส้นสินเทา (Sin Thao line) คือเส้นซิกแซกที่ใช้แบ่งฉากและช่วงเวลาในจิตรกรรมไทย"
+      },
+      {
+        id: 30,
+        chapter: 6,
+        question: "How does the Eastern/Thai aesthetic approach differ from the Western/Individual aesthetic approach?",
+        options: [
+          "Eastern aesthetics prioritizes the Ego and conceptual disruption, whereas Western aesthetics prioritizes harmony",
+          "Eastern aesthetics focuses on inside-out awareness, harmony, and spiritual synthesis, whereas Western aesthetics emphasizes the Ego and realism",
+          "Eastern aesthetics rejects religious narratives, whereas Western aesthetics focuses exclusively on Buddhism",
+          "Eastern aesthetics relies on linear vanishing points, whereas Western aesthetics uses Lai-Thai"
+        ],
+        answer: 1,
+        rationaleEng: "Eastern/Thai aesthetics emphasizes inside-out awareness, harmony, spiritual synthesis, and aesthetic contemplation, contrasting with Western focus on Ego and realism.",
+        rationaleThai: "สุนทรียศาสตร์ตะวันออก/ไทยเน้นการตระหนักรู้จากภายใน (Inside-Out awareness) ความกลมกลืน และการหลอมรวมทางจิตวิญญาณ ต่างจากตะวันตกที่เน้นตัวตน (Ego) และความสมจริง"
+      }
+    ];
+
+    // =========================================================================
+    // STATE MANAGEMENT
+    // =========================================================================
+    let state = {
+      currentView: 'dashboard', // 'dashboard' | 'chapter-1'..'chapter-6' | 'mock'
+      completedChapters: JSON.parse(localStorage.getItem('psy_completed_chapters') || '[]'),
+      chapterScores: JSON.parse(localStorage.getItem('psy_chapter_scores') || '{}'),
+      mockHistory: JSON.parse(localStorage.getItem('psy_mock_history') || '[]'),
+      // Active Chapter Quiz State
+      activeChapterQuizAnswers: {},
+      activeChapterQuizSubmitted: false,
+      // Active Mock Exam State
+      mockState: {
+        status: 'intro', // 'intro' | 'active' | 'result'
+        mode: 'exam', // 'exam' (timed, submit at end) | 'practice' (instant feedback)
+        currentIdx: 0,
+        answers: {},
+        flagged: {},
+        timeLeft: 30 * 60, // 30 minutes
+        timerInterval: null
+      }
+    };
+
+    function saveProgress() {
+      localStorage.setItem('psy_completed_chapters', JSON.stringify(state.completedChapters));
+      localStorage.setItem('psy_chapter_scores', JSON.stringify(state.chapterScores));
+      localStorage.setItem('psy_mock_history', JSON.stringify(state.mockHistory));
+      renderSidebar();
+    }
+
+    function resetAllProgress() {
+      if (!confirm('ต้องการรีเซ็ตประวัติการเรียนและคะแนนสอบทั้งหมดใช่หรือไม่?')) return;
+      state.completedChapters = [];
+      state.chapterScores = {};
+      state.mockHistory = [];
+      saveProgress();
+      navigate('dashboard');
+    }
+
+    // =========================================================================
+    // NAVIGATION & SIDEBAR
+    // =========================================================================
+    function toggleSidebar() {
+      const sb = document.getElementById('sidebar');
+      const ov = document.getElementById('sidebarOverlay');
+      sb.classList.toggle('-translate-x-full');
+      ov.classList.toggle('hidden');
+    }
+
+    function navigate(view) {
+      // Stop mock timer if navigating away from active mock
+      if (state.currentView === 'mock' && view !== 'mock' && state.mockState.timerInterval) {
+        clearInterval(state.mockState.timerInterval);
+        state.mockState.timerInterval = null;
+      }
+
+      state.currentView = view;
+      state.activeChapterQuizAnswers = {};
+      state.activeChapterQuizSubmitted = false;
+
+      // Close mobile sidebar if open
+      const sb = document.getElementById('sidebar');
+      if (!sb.classList.contains('-translate-x-full') && window.innerWidth < 1024) {
+        toggleSidebar();
+      }
+
+      renderSidebar();
+      renderMain();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderSidebar() {
+      const list = document.getElementById('chapterNavList');
+      const badge = document.getElementById('sidebarProgressBadge');
+      badge.textContent = `${state.completedChapters.length}/6 บท`;
+
+      // Highlight dashboard
+      const dashBtn = document.getElementById('nav-dashboard');
+      if (state.currentView === 'dashboard') {
+        dashBtn.className = 'nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold bg-indigo-50 text-indigo-700 transition';
+      } else {
+        dashBtn.className = 'nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50 transition';
+      }
+
+      list.innerHTML = chaptersData.map(ch => {
+        const isCurrent = state.currentView === `chapter-${ch.id}`;
+        const isDone = state.completedChapters.includes(ch.id);
+        const score = state.chapterScores[ch.id];
+
+        return `
+          <button onclick="navigate('chapter-${ch.id}')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs sm:text-sm transition ${isCurrent ? 'bg-indigo-600 text-white font-semibold shadow-xs' : 'text-slate-600 hover:bg-slate-50 font-medium'}">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] shrink-0 ${isCurrent ? 'bg-white/20 text-white' : (isDone ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500')}">
+                ${isDone ? '✓' : ch.id}
+              </span>
+              <span class="truncate">${ch.shortTitle}</span>
+            </div>
+            ${score !== undefined ? `<span class="text-[10px] px-1.5 py-0.5 rounded shrink-0 ml-1 ${isCurrent ? 'bg-white/20 text-white' : 'bg-emerald-50 text-emerald-700 font-semibold'}">${score}/5</span>` : ''}
+          </button>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // RENDER VIEWS
+    // =========================================================================
+    function renderMain() {
+      const container = document.getElementById('mainContainer');
+      if (state.currentView === 'dashboard') {
+        container.innerHTML = getDashboardHTML();
+      } else if (state.currentView.startsWith('chapter-')) {
+        const chId = parseInt(state.currentView.split('-')[1]);
+        container.innerHTML = getChapterHTML(chId);
+      } else if (state.currentView === 'mock') {
+        container.innerHTML = getMockExamHTML();
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 1. DASHBOARD VIEW
+    // -------------------------------------------------------------------------
+    function getDashboardHTML() {
+      const completedCount = state.completedChapters.length;
+      const pct = Math.round((completedCount / 6) * 100);
+      const bestMock = state.mockHistory.length > 0
+        ? Math.max(...state.mockHistory.map(m => m.score))
+        : null;
+
+      return `
+        <div class="fade-in space-y-8">
+          <!-- Hero Banner -->
+          <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 rounded-3xl p-6 sm:p-10 text-white shadow-lg shadow-indigo-200/60 relative overflow-hidden">
+            <div class="relative z-10 max-w-2xl">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-indigo-100 text-xs font-medium mb-4 backdrop-blur-xs">
+                🎓 18001001 Psychology in Daily Life
+              </span>
+              <h2 class="text-2xl sm:text-3xl font-bold leading-snug mb-3">
+                ติวเข้มวิชาจิตวิทยา เข้าใจง่าย พร้อมสอบจริง!
+              </h2>
+              <p class="text-indigo-100 text-sm sm:text-base leading-relaxed mb-6">
+                สรุปเนื้อหาครบทั้ง 6 บทเรียนเป็นภาษาไทยพร้อมคีย์เวิร์ดภาษาอังกฤษที่ออกสอบบ่อย มีแบบทดสอบท้ายบทให้เช็กความเข้าใจ และสนามสอบจำลอง <strong>English Mock Exam 30 ข้อ</strong>
+              </p>
+              <div class="flex flex-wrap gap-3">
+                <button onclick="navigate('chapter-1')" class="px-5 py-2.5 bg-white text-indigo-700 font-semibold rounded-xl text-sm hover:bg-indigo-50 transition shadow-sm">
+                  เริ่มเรียนบทที่ 1 →
+                </button>
+                <button onclick="navigate('mock')" class="px-5 py-2.5 bg-indigo-500/40 hover:bg-indigo-500/60 text-white border border-white/25 font-semibold rounded-xl text-sm transition">
+                  ทำข้อสอบ Mock Exam (EN)
+                </button>
+              </div>
+            </div>
+            <!-- Decorative Circle -->
+            <div class="hidden sm:block absolute -right-12 -bottom-16 w-64 h-64 rounded-full bg-white/10 blur-2xl"></div>
+          </div>
+
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+              <div class="text-xs font-medium text-slate-400">ความคืบหน้าบทเรียน</div>
+              <div class="mt-2 flex items-end justify-between">
+                <div class="text-2xl font-bold text-slate-800">${completedCount} <span class="text-sm font-normal text-slate-400">/ 6 บท</span></div>
+                <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded-lg">${pct}%</span>
+              </div>
+              <div class="w-full h-2 bg-slate-100 rounded-full mt-3 overflow-hidden">
+                <div class="h-full bg-indigo-600 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+              </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+              <div class="text-xs font-medium text-slate-400">คะแนนสอบท้ายบทรวม</div>
+              <div class="mt-2 flex items-end justify-between">
+                <div class="text-2xl font-bold text-slate-800">
+                  ${Object.values(state.chapterScores).reduce((a, b) => a + b, 0)}
+                  <span class="text-sm font-normal text-slate-400">/ 30 คะแนน</span>
+                </div>
+                <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">6 บทเรียน</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-3">ทำข้อสอบท้ายบทเพื่อวัดความเข้าใจรายบท</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+              <div class="text-xs font-medium text-slate-400">สถิติสูงสุด English Mock Exam</div>
+              <div class="mt-2 flex items-end justify-between">
+                <div class="text-2xl font-bold text-slate-800">
+                  ${bestMock !== null ? bestMock : '-'}
+                  <span class="text-sm font-normal text-slate-400">/ 30 คะแนน</span>
+                </div>
+                <span class="text-xs font-medium text-violet-600 bg-violet-50 px-2 py-1 rounded-lg">สอบแล้ว ${state.mockHistory.length} ครั้ง</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-3">ข้อสอบภาษาอังกฤษแนวข้อสอบมหาวิทยาลัย</p>
+            </div>
+          </div>
+
+          <!-- Chapter Grid -->
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-slate-800">เนื้อหาบทเรียนทั้งหมด (คลิกเพื่อเข้าเรียนและทำแบบทดสอบ)</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              ${chaptersData.map(ch => {
+                const isDone = state.completedChapters.includes(ch.id);
+                const score = state.chapterScores[ch.id];
+                return `
+                  <div onclick="navigate('chapter-${ch.id}')" class="concept-card cursor-pointer bg-white rounded-2xl p-5 border border-slate-200 flex flex-col justify-between">
+                    <div>
+                      <div class="flex items-center justify-between gap-2 mb-2">
+                        <span class="text-xs font-bold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700">บทที่ ${ch.id}</span>
+                        ${isDone
+                          ? `<span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">✓ เรียนจบแล้ว ${score !== undefined ? `(สอบได้ ${score}/5)` : ''}</span>`
+                          : `<span class="text-xs text-slate-400">ยังไม่เรียน</span>`
+                        }
+                      </div>
+                      <h4 class="font-bold text-slate-800 text-base mb-1">${ch.title.replace(`บทที่ ${ch.id}: `, '')}</h4>
+                      <p class="text-xs font-eng text-indigo-600 font-medium mb-2">${ch.engTitle}</p>
+                      <p class="text-xs text-slate-500 leading-relaxed">${ch.summary}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-indigo-600">
+                      <span>อ่านสรุป + สอบท้ายบท 5 ข้อ</span>
+                      <span>เข้าเรียน →</span>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // -------------------------------------------------------------------------
+    // 2. CHAPTER VIEW (THAI LESSON + END-OF-CHAPTER QUIZ)
+    // -------------------------------------------------------------------------
+    function getChapterHTML(chId) {
+      const ch = chaptersData.find(c => c.id === chId);
+      const questions = chapterQuizzes[chId];
+      const isCompleted = state.completedChapters.includes(chId);
+
+      // Quiz HTML
+      const quizHTML = questions.map((q, qIdx) => {
+        const selected = state.activeChapterQuizAnswers[qIdx];
+        const submitted = state.activeChapterQuizSubmitted;
+
+        return `
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+            <div class="font-semibold text-slate-800 text-sm">
+              <span class="text-indigo-600 font-bold mr-1">ข้อที่ ${qIdx + 1}.</span> ${q.q}
+            </div>
+            <div class="space-y-2">
+              ${q.options.map((opt, oIdx) => {
+                let btnClass = "bg-white border-slate-200 text-slate-700 hover:border-indigo-300";
+                let badge = `<span class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-xs shrink-0">${['ก','ข','ค','ง'][oIdx]}</span>`;
+
+                if (!submitted && selected === oIdx) {
+                  btnClass = "bg-indigo-50 border-indigo-500 text-indigo-900 font-medium";
+                  badge = `<span class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs shrink-0">${['ก','ข','ค','ง'][oIdx]}</span>`;
+                } else if (submitted) {
+                  if (oIdx === q.answer) {
+                    btnClass = "bg-emerald-50 border-emerald-500 text-emerald-900 font-semibold";
+                    badge = `<span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs shrink-0">✓</span>`;
+                  } else if (selected === oIdx && selected !== q.answer) {
+                    btnClass = "bg-rose-50 border-rose-400 text-rose-900";
+                    badge = `<span class="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs shrink-0">✕</span>`;
+                  } else {
+                    btnClass = "bg-white border-slate-200 text-slate-400 opacity-75";
+                  }
+                }
+
+                return `
+                  <button ${submitted ? 'disabled' : ''} onclick="selectChapterOption(${qIdx}, ${oIdx})" class="w-full text-left p-3 rounded-xl border text-xs sm:text-sm flex items-center gap-3 transition ${btnClass}">
+                    ${badge}
+                    <span>${opt}</span>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+            ${submitted ? `
+              <div class="p-3 rounded-xl bg-indigo-50/80 border border-indigo-100 text-xs text-slate-700 leading-relaxed">
+                <strong class="text-indigo-700">คำอธิบาย:</strong> ${q.rationale}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+
+      let scoreBanner = '';
+      if (state.activeChapterQuizSubmitted) {
+        let correct = 0;
+        questions.forEach((q, idx) => {
+          if (state.activeChapterQuizAnswers[idx] === q.answer) correct++;
+        });
+        scoreBanner = `
+          <div class="p-5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">
+            <div>
+              <div class="text-xs uppercase tracking-wider text-emerald-100 font-semibold">ผลการสอบท้ายบทที่ ${chId}</div>
+              <div class="text-2xl font-bold mt-0.5">คุณได้ ${correct} / ${questions.length} คะแนน (${Math.round((correct/questions.length)*100)}%)</div>
+              <p class="text-xs text-emerald-100 mt-1">ระบบบันทึกความคืบหน้าของบทเรียนนี้เรียบร้อยแล้ว</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="retryChapterQuiz(${chId})" class="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-xl text-xs font-semibold transition">ทำแบบทดสอบอีกครั้ง</button>
+              ${chId < 6 ? `<button onclick="navigate('chapter-${chId + 1}')" class="px-4 py-2 bg-white text-emerald-800 rounded-xl text-xs font-bold hover:bg-emerald-50 transition">บทถัดไป →</button>` : `<button onclick="navigate('mock')" class="px-4 py-2 bg-white text-emerald-800 rounded-xl text-xs font-bold hover:bg-emerald-50 transition">ไปสอบ Mock Exam →</button>`}
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="fade-in space-y-8">
+          <!-- Breadcrumb & Header -->
+          <div>
+            <div class="flex items-center gap-2 text-xs text-slate-500 mb-2">
+              <button onclick="navigate('dashboard')" class="hover:text-indigo-600">หน้าหลัก</button>
+              <span>/</span>
+              <span class="text-indigo-600 font-medium">บทที่ ${ch.id}</span>
+            </div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h2 class="text-2xl font-bold text-slate-800">${ch.title}</h2>
+                <p class="text-sm font-eng text-indigo-600 font-medium mt-0.5">${ch.engTitle}</p>
+              </div>
+              <button onclick="toggleCompleteChapter(${ch.id})" class="self-start sm:self-center px-4 py-2 rounded-xl text-xs font-semibold border transition flex items-center gap-1.5 ${isCompleted ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-300'}">
+                ${isCompleted ? '✓ บันทึกว่าเรียนจบแล้ว' : '○ ทำเครื่องหมายว่าเรียนจบ'}
+              </button>
+            </div>
+          </div>
+
+          <!-- Lesson Content -->
+          ${ch.lessonHTML}
+
+          <!-- End-of-Chapter Quiz Section -->
+          <div id="chapterQuizSection" class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-indigo-100 shadow-sm space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Chapter Assessment</span>
+                <h3 class="text-xl font-bold text-slate-800">แบบทดสอบท้ายบทที่ ${ch.id} (5 ข้อ)</h3>
+              </div>
+              <span class="text-xs text-slate-500">เลือกคำตอบให้ครบทุกข้อแล้วกดตรวจคำตอบ</span>
+            </div>
+
+            ${scoreBanner}
+
+            <div class="space-y-4">
+              ${quizHTML}
+            </div>
+
+            ${!state.activeChapterQuizSubmitted ? `
+              <div class="pt-2 flex justify-end">
+                <button onclick="submitChapterQuiz(${ch.id})" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm shadow-md shadow-indigo-200 transition">
+                  ส่งคำตอบและดูเฉลย
+                </button>
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- Bottom Navigation -->
+          <div class="flex items-center justify-between pt-2">
+            ${ch.id > 1
+              ? `<button onclick="navigate('chapter-${ch.id - 1}')" class="px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 transition">← บทที่ ${ch.id - 1}</button>`
+              : `<div></div>`
+            }
+            ${ch.id < 6
+              ? `<button onclick="navigate('chapter-${ch.id + 1}')" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 rounded-xl text-xs sm:text-sm font-semibold text-white transition">บทถัดไป: บทที่ ${ch.id + 1} →</button>`
+              : `<button onclick="navigate('mock')" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-xl text-xs sm:text-sm font-bold text-white shadow-md transition">เข้าสู่สนามสอบ English Mock Exam →</button>`
+            }
+          </div>
+        </div>
+      `;
+    }
+
+    function selectChapterOption(qIdx, oIdx) {
+      if (state.activeChapterQuizSubmitted) return;
+      state.activeChapterQuizAnswers[qIdx] = oIdx;
+      renderMain();
+    }
+
+    function submitChapterQuiz(chId) {
+      const questions = chapterQuizzes[chId];
+      if (Object.keys(state.activeChapterQuizAnswers).length < questions.length) {
+        alert('กรุณาเลือกคำตอบให้ครบทั้ง 5 ข้อก่อนส่งคำตอบครับ');
+        return;
+      }
+      state.activeChapterQuizSubmitted = true;
+      let correct = 0;
+      questions.forEach((q, idx) => {
+        if (state.activeChapterQuizAnswers[idx] === q.answer) correct++;
+      });
+
+      state.chapterScores[chId] = correct;
+      if (!state.completedChapters.includes(chId)) {
+        state.completedChapters.push(chId);
+      }
+      saveProgress();
+      renderMain();
+      document.getElementById('chapterQuizSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function retryChapterQuiz(chId) {
+      state.activeChapterQuizAnswers = {};
+      state.activeChapterQuizSubmitted = false;
+      renderMain();
+    }
+
+    function toggleCompleteChapter(chId) {
+      if (state.completedChapters.includes(chId)) {
+        state.completedChapters = state.completedChapters.filter(id => id !== chId);
+      } else {
+        state.completedChapters.push(chId);
+      }
+      saveProgress();
+      renderMain();
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. ENGLISH MOCK EXAM VIEW
+    // -------------------------------------------------------------------------
+    function getMockExamHTML() {
+      const ms = state.mockState;
+
+      // --- INTRO SCREEN ---
+      if (ms.status === 'intro') {
+        return `
+          <div class="fade-in max-w-3xl mx-auto space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm text-center space-y-5">
+              <div class="w-16 h-16 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-2xl font-bold mx-auto font-eng">
+                EN
+              </div>
+              <div>
+                <span class="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold uppercase tracking-wider">University Exam Simulation</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mt-2 font-eng">Psychology in Daily Life — English Mock Exam</h2>
+                <p class="text-sm text-slate-500 mt-2">
+                  ข้อสอบจำลองภาษาอังกฤษ <strong>30 ข้อ</strong> ครอบคลุมเนื้อหาทั้ง 6 บท (บทละ 5 ข้อ) ออกแบบตามแนวข้อสอบจริง พร้อมระบบวิเคราะห์จุดอ่อนรายบทและเฉลยละเอียด 2 ภาษา (อังกฤษ + ไทย)
+                </p>
+              </div>
+
+              <!-- Mode Selection -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left pt-2">
+                <div onclick="setMockMode('exam')" class="cursor-pointer p-4 rounded-2xl border-2 transition ${ms.mode === 'exam' ? 'border-indigo-600 bg-indigo-50/50' : 'border-slate-200 hover:border-indigo-200'}">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="font-bold text-slate-800 text-sm">⏱️ Exam Mode (จำลองสอบจริง)</span>
+                    <span class="w-4 h-4 rounded-full border-2 flex items-center justify-center ${ms.mode === 'exam' ? 'border-indigo-600' : 'border-slate-300'}">
+                      ${ms.mode === 'exam' ? '<span class="w-2 h-2 rounded-full bg-indigo-600"></span>' : ''}
+                    </span>
+                  </div>
+                  <p class="text-xs text-slate-500">จับเวลา 30 นาที ทำครบแล้วกดส่งเพื่อดูคะแนนรวม การวิเคราะห์รายบท และเฉลยทั้งหมด</p>
+                </div>
+
+                <div onclick="setMockMode('practice')" class="cursor-pointer p-4 rounded-2xl border-2 transition ${ms.mode === 'practice' ? 'border-indigo-600 bg-indigo-50/50' : 'border-slate-200 hover:border-indigo-200'}">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="font-bold text-slate-800 text-sm">💡 Practice Mode (โหมดฝึกฝน)</span>
+                    <span class="w-4 h-4 rounded-full border-2 flex items-center justify-center ${ms.mode === 'practice' ? 'border-indigo-600' : 'border-slate-300'}">
+                      ${ms.mode === 'practice' ? '<span class="w-2 h-2 rounded-full bg-indigo-600"></span>' : ''}
+                    </span>
+                  </div>
+                  <p class="text-xs text-slate-500">ไม่จับเวลา เมื่อเลือกคำตอบแต่ละข้อจะแสดงเฉลยและคำอธิบายทันที เหมาะสำหรับทบทวนศัพท์</p>
+                </div>
+              </div>
+
+              <div class="pt-4">
+                <button onclick="startMockExam()" class="w-full sm:w-auto px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm shadow-lg shadow-indigo-200 transition">
+                  เริ่มทำข้อสอบ (Start Mock Exam) →
+                </button>
+              </div>
+            </div>
+
+            ${state.mockHistory.length > 0 ? `
+              <div class="bg-white rounded-2xl p-6 border border-slate-200">
+                <h3 class="font-bold text-slate-800 text-sm mb-3">ประวัติการสอบ Mock Exam ของคุณ</h3>
+                <div class="space-y-2">
+                  ${state.mockHistory.slice().reverse().map((h, i) => `
+                    <div class="flex items-center justify-between text-xs p-3 rounded-xl bg-slate-50">
+                      <div>
+                        <span class="font-semibold text-slate-700">ครั้งที่ ${state.mockHistory.length - i}</span>
+                        <span class="text-slate-400 ml-2">(${h.date})</span>
+                      </div>
+                      <span class="font-bold px-2.5 py-1 rounded-lg ${h.score >= 24 ? 'bg-emerald-100 text-emerald-700' : (h.score >= 18 ? 'bg-amber-100 text-amber-700' : 'bg-rose-100 text-rose-700')}">
+                        ${h.score} / 30 คะแนน (${Math.round((h.score/30)*100)}%)
+                      </span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      // --- ACTIVE EXAM SCREEN ---
+      if (ms.status === 'active') {
+        const q = mockExamQuestions[ms.currentIdx];
+        const selected = ms.answers[ms.currentIdx];
+        const isFlagged = !!ms.flagged[ms.currentIdx];
+        const answeredCount = Object.keys(ms.answers).length;
+        const showInstantFeedback = ms.mode === 'practice' && selected !== undefined;
+
+        const mins = String(Math.floor(ms.timeLeft / 60)).padStart(2, '0');
+        const secs = String(ms.timeLeft % 60).padStart(2, '0');
+
+        return `
+          <div class="fade-in space-y-6">
+            <!-- Top Bar -->
+            <div class="bg-white rounded-2xl p-4 border border-slate-200 flex flex-wrap items-center justify-between gap-3 sticky top-14 lg:top-4 z-20 shadow-xs">
+              <div class="flex items-center gap-3">
+                <span class="px-3 py-1 rounded-lg bg-indigo-600 text-white text-xs font-bold font-eng">
+                  Question ${ms.currentIdx + 1} / 30
+                </span>
+                <span class="text-xs text-slate-500 hidden sm:inline">ตอบแล้ว ${answeredCount}/30 ข้อ</span>
+              </div>
+
+              <div class="flex items-center gap-3">
+                ${ms.mode === 'exam' ? `
+                  <div id="mockTimerDisplay" class="px-3 py-1.5 rounded-lg font-eng font-bold text-xs sm:text-sm ${ms.timeLeft < 300 ? 'bg-rose-50 text-rose-600 border border-rose-200' : 'bg-slate-100 text-slate-700'}">
+                    ⏱️ ${mins}:${secs}
+                  </div>
+                ` : `<span class="px-3 py-1 rounded-lg bg-teal-50 text-teal-700 text-xs font-semibold">Practice Mode</span>`}
+
+                <button onclick="submitMockExam()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition">
+                  ส่งข้อสอบ (Submit)
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <!-- Question Card -->
+              <div class="lg:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs flex flex-col justify-between space-y-6">
+                <div class="space-y-5">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider font-eng">Topic: Chapter ${q.chapter}</span>
+                    <button onclick="toggleFlagMock(${ms.currentIdx})" class="text-xs font-medium px-2.5 py-1 rounded-lg border transition ${isFlagged ? 'bg-amber-50 border-amber-300 text-amber-700' : 'border-slate-200 text-slate-500 hover:bg-slate-50'}">
+                      ${isFlagged ? '🚩 ปักธงทบทวนแล้ว' : '🏳️ ปักธงไว้ทบทวน'}
+                    </button>
+                  </div>
+
+                  <h3 class="text-base sm:text-lg font-bold text-slate-800 leading-relaxed font-eng">
+                    ${ms.currentIdx + 1}. ${q.question}
+                  </h3>
+
+                  <div class="space-y-2.5 font-eng">
+                    ${q.options.map((opt, idx) => {
+                      let style = "bg-white border-slate-200 text-slate-700 hover:border-indigo-300";
+                      let badgeStyle = "border-slate-300 text-slate-600";
+
+                      if (!showInstantFeedback && selected === idx) {
+                        style = "bg-indigo-50 border-indigo-600 text-indigo-900 font-semibold";
+                        badgeStyle = "bg-indigo-600 border-indigo-600 text-white";
+                      } else if (showInstantFeedback) {
+                        if (idx === q.answer) {
+                          style = "bg-emerald-50 border-emerald-500 text-emerald-900 font-semibold";
+                          badgeStyle = "bg-emerald-600 border-emerald-600 text-white";
+                        } else if (selected === idx && idx !== q.answer) {
+                          style = "bg-rose-50 border-rose-400 text-rose-900";
+                          badgeStyle = "bg-rose-500 border-rose-500 text-white";
+                        } else {
+                          style = "bg-white border-slate-200 text-slate-400 opacity-75";
+                        }
+                      }
+
+                      return `
+                        <button onclick="selectMockOption(${idx})" class="w-full text-left p-3.5 rounded-xl border text-xs sm:text-sm flex items-start gap-3 transition ${style}">
+                          <span class="w-6 h-6 rounded-full border flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${badgeStyle}">
+                            ${['A','B','C','D'][idx]}
+                          </span>
+                          <span class="leading-relaxed">${opt}</span>
+                        </button>
+                      `;
+                    }).join('')}
+                  </div>
+
+                  ${showInstantFeedback ? `
+                    <div class="p-4 rounded-2xl bg-indigo-50/80 border border-indigo-100 space-y-1.5 text-xs">
+                      <div class="font-bold text-indigo-800 font-eng">Explanation: ${q.rationaleEng}</div>
+                      <div class="text-slate-600"><strong>คำอธิบายภาษาไทย:</strong> ${q.rationaleThai}</div>
+                    </div>
+                  ` : ''}
+                </div>
+
+                <!-- Prev / Next Controls -->
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                  <button ${ms.currentIdx === 0 ? 'disabled' : ''} onclick="goMockQuestion(${ms.currentIdx - 1})" class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-40 transition">
+                    ← Previous
+                  </button>
+                  ${ms.currentIdx < 29 ? `
+                    <button onclick="goMockQuestion(${ms.currentIdx + 1})" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold transition">
+                      Next Question →
+                    </button>
+                  ` : `
+                    <button onclick="submitMockExam()" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">
+                      Finish & Submit Exam ✓
+                    </button>
+                  `}
+                </div>
+              </div>
+
+              <!-- Question Navigator Grid -->
+              <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs self-start">
+                <div class="text-xs font-bold text-slate-700 mb-3 flex items-center justify-between">
+                  <span>กระดาษคำตอบ (Navigator)</span>
+                  <span class="text-slate-400 font-normal">${answeredCount}/30</span>
+                </div>
+                <div class="grid grid-cols-5 gap-2 font-eng">
+                  ${mockExamQuestions.map((_, i) => {
+                    const isCurr = i === ms.currentIdx;
+                    const isAns = ms.answers[i] !== undefined;
+                    const isFlg = !!ms.flagged[i];
+                    let btnCls = "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100";
+                    if (isCurr) btnCls = "bg-indigo-600 text-white border-indigo-600 font-bold ring-2 ring-indigo-200";
+                    else if (isAns) btnCls = "bg-indigo-100 text-indigo-800 border-indigo-200 font-semibold";
+
+                    return `
+                      <button onclick="goMockQuestion(${i})" class="relative h-9 rounded-lg border text-xs flex items-center justify-center transition ${btnCls}">
+                        ${i + 1}
+                        ${isFlg ? '<span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-400 border border-white"></span>' : ''}
+                      </button>
+                    `;
+                  }).join('')}
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap gap-3 text-[11px] text-slate-500">
+                  <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-indigo-600"></span> ข้อปัจจุบัน</div>
+                  <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-indigo-100 border border-indigo-200"></span> ตอบแล้ว</div>
+                  <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> ปักธง</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // --- RESULT SCREEN ---
+      if (ms.status === 'result') {
+        let totalCorrect = 0;
+        const chapterBreakdown = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+
+        mockExamQuestions.forEach((q, idx) => {
+          if (ms.answers[idx] === q.answer) {
+            totalCorrect++;
+            chapterBreakdown[q.chapter]++;
+          }
+        });
+
+        const pct = Math.round((totalCorrect / 30) * 100);
+        let gradeMsg = "ยอดเยี่ยมมาก! คุณพร้อมสำหรับสนามสอบจริงแล้ว";
+        if (pct < 50) gradeMsg = "แนะนำให้กลับไปทบทวนบทที่ได้คะแนนน้อยด้านล่าง แล้วลองสอบใหม่อีกครั้งนะ!";
+        else if (pct < 80) gradeMsg = "ทำได้ดีมาก! ทบทวนข้อที่พลาดอีกนิด รับรองได้คะแนนระดับท็อปแน่นอน";
+
+        return `
+          <div class="fade-in space-y-8">
+            <!-- Score Summary Card -->
+            <div class="bg-gradient-to-br from-indigo-700 to-violet-800 rounded-3xl p-6 sm:p-10 text-white shadow-lg">
+              <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="text-center md:text-left space-y-2">
+                  <span class="px-3 py-1 rounded-full bg-white/15 text-indigo-100 text-xs font-bold uppercase tracking-wider">Mock Exam Result</span>
+                  <h2 class="text-3xl sm:text-4xl font-bold font-eng">${totalCorrect} / 30 <span class="text-lg font-normal text-indigo-200">(${pct}%)</span></h2>
+                  <p class="text-sm text-indigo-100">${gradeMsg}</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                  <button onclick="resetMockToIntro()" class="px-5 py-2.5 bg-white text-indigo-700 font-bold rounded-xl text-xs sm:text-sm hover:bg-indigo-50 transition">
+                    สอบใหม่อีกครั้ง (Retake)
+                  </button>
+                  <button onclick="navigate('dashboard')" class="px-5 py-2.5 bg-white/15 hover:bg-white/25 text-white border border-white/25 font-semibold rounded-xl text-xs sm:text-sm transition">
+                    กลับหน้าหลัก
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chapter Breakdown Analytics -->
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs">
+              <h3 class="font-bold text-slate-800 text-base mb-4">📊 วิเคราะห์คะแนนรายบท (คลิกที่บทเพื่อกลับไปทบทวนเนื้อหาภาษาไทย)</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                ${chaptersData.map(ch => {
+                  const chScore = chapterBreakdown[ch.id];
+                  const isWeak = chScore <= 2;
+                  return `
+                    <div onclick="navigate('chapter-${ch.id}')" class="cursor-pointer p-4 rounded-2xl border transition hover:shadow-sm ${isWeak ? 'bg-rose-50/50 border-rose-200' : 'bg-slate-50 border-slate-200'}">
+                      <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-bold text-slate-700">${ch.shortTitle}</span>
+                        <span class="text-xs font-bold px-2 py-0.5 rounded ${isWeak ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}">${chScore}/5</span>
+                      </div>
+                      <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden mt-2">
+                        <div class="h-full ${isWeak ? 'bg-rose-500' : 'bg-emerald-500'}" style="width: ${(chScore/5)*100}%"></div>
+                      </div>
+                      <div class="text-[11px] mt-2 font-medium ${isWeak ? 'text-rose-600' : 'text-indigo-600'}">
+                        ${isWeak ? '⚠️ ควรทบทวนบทนี้เพิ่มเติม →' : 'คลิกเพื่อทบทวนบทเรียน →'}
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+
+            <!-- Detailed Bilingual Review -->
+            <div class="space-y-4">
+              <h3 class="font-bold text-slate-800 text-lg">📝 เฉลยละเอียดทุกข้อ (Detailed Review)</h3>
+              ${mockExamQuestions.map((q, idx) => {
+                const userAns = ms.answers[idx];
+                const isCorrect = userAns === q.answer;
+                return `
+                  <div class="bg-white rounded-2xl p-5 sm:p-6 border ${isCorrect ? 'border-emerald-200' : 'border-rose-200'} shadow-xs space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-xs font-bold px-2.5 py-1 rounded-lg ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                        ${isCorrect ? '✓ ถูกต้อง (Correct)' : (userAns === undefined ? '− ไม่ได้ตอบ (Unanswered)' : '✕ ผิด (Incorrect)')}
+                      </span>
+                      <span class="text-xs text-slate-400">บทที่ ${q.chapter}</span>
+                    </div>
+                    <p class="font-bold text-slate-800 text-sm sm:text-base font-eng">${idx + 1}. ${q.question}</p>
+                    <div class="space-y-1.5 text-xs sm:text-sm font-eng">
+                      ${q.options.map((opt, oIdx) => {
+                        let cls = "p-2.5 rounded-xl border border-slate-100 text-slate-500";
+                        if (oIdx === q.answer) cls = "p-2.5 rounded-xl border border-emerald-400 bg-emerald-50 text-emerald-900 font-semibold";
+                        else if (oIdx === userAns && userAns !== q.answer) cls = "p-2.5 rounded-xl border border-rose-300 bg-rose-50 text-rose-900 line-through";
+                        return `<div class="${cls}"><strong>${['A','B','C','D'][oIdx]}.</strong> ${opt}</div>`;
+                      }).join('')}
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
+                      <div class="text-indigo-900 font-medium font-eng"><strong>Rationale:</strong> ${q.rationaleEng}</div>
+                      <div class="text-slate-600"><strong>คำอธิบายภาษาไทย:</strong> ${q.rationaleThai}</div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function setMockMode(mode) {
+      state.mockState.mode = mode;
+      renderMain();
+    }
+
+    function startMockExam() {
+      if (state.mockState.timerInterval) clearInterval(state.mockState.timerInterval);
+      state.mockState = {
+        status: 'active',
+        mode: state.mockState.mode,
+        currentIdx: 0,
+        answers: {},
+        flagged: {},
+        timeLeft: 30 * 60,
+        timerInterval: null
+      };
+
+      if (state.mockState.mode === 'exam') {
+        state.mockState.timerInterval = setInterval(() => {
+          state.mockState.timeLeft--;
+          const timerEl = document.getElementById('mockTimerDisplay');
+          if (timerEl) {
+            const mins = String(Math.floor(state.mockState.timeLeft / 60)).padStart(2, '0');
+            const secs = String(state.mockState.timeLeft % 60).padStart(2, '0');
+            timerEl.textContent = `⏱️ ${mins}:${secs}`;
+          }
+          if (state.mockState.timeLeft <= 0) {
+            clearInterval(state.mockState.timerInterval);
+            submitMockExam(true);
+          }
+        }, 1000);
+      }
+
+      renderMain();
+    }
+
+    function selectMockOption(oIdx) {
+      const ms = state.mockState;
+      if (ms.mode === 'practice' && ms.answers[ms.currentIdx] !== undefined) return;
+      ms.answers[ms.currentIdx] = oIdx;
+      renderMain();
+    }
+
+    function goMockQuestion(idx) {
+      if (idx < 0 || idx >= mockExamQuestions.length) return;
+      state.mockState.currentIdx = idx;
+      renderMain();
+    }
+
+    function toggleFlagMock(idx) {
+      state.mockState.flagged[idx] = !state.mockState.flagged[idx];
+      renderMain();
+    }
+
+    function submitMockExam(force = false) {
+      const answeredCount = Object.keys(state.mockState.answers).length;
+      if (!force && answeredCount < 30) {
+        if (!confirm(`คุณยังทำข้อสอบไม่ครบ (ทำไปแล้ว ${answeredCount}/30 ข้อ) ต้องการส่งข้อสอบเลยหรือไม่?`)) {
+          return;
+        }
+      }
+      if (state.mockState.timerInterval) {
+        clearInterval(state.mockState.timerInterval);
+        state.mockState.timerInterval = null;
+      }
+
+      let score = 0;
+      mockExamQuestions.forEach((q, idx) => {
+        if (state.mockState.answers[idx] === q.answer) score++;
+      });
+
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      state.mockHistory.push({ score, date: dateStr });
+      saveProgress();
+
+      state.mockState.status = 'result';
+      renderMain();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetMockToIntro() {
+      state.mockState.status = 'intro';
+      renderMain();
+    }
+
+    // Initialize App
+    renderSidebar();
+    renderMain();
+  </script>
+</body>
+</html>
